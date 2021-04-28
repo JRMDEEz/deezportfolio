@@ -1,0 +1,82 @@
+<div class="topnav">
+  <div class="text-center maintenance" id="maintenanceTag">
+    <i class="fa fa-wrench white"></i>
+    <p style="display: inline-block; margin:0px" class="white">
+      site under maintenance!
+    </p>
+    <i class="fa fa-wrench white"></i>
+  </div>
+  <div class="row no-gutters">
+    <div class="col-md-6">
+      <div class="col-sm-4">
+        <img
+          class="companylogo"
+          src="https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/DEEveloperStudiowTitleShadow.png?alt=media&token=247dd6b2-ff9e-44b1-b349-5aeef962a38c"
+        />
+      </div>
+      <div class="col-sm-8">
+        <div class="col-xs-1 col-sm-0"></div>
+        <div class="col-xs-10 col-sm-10 col-md-11 searchbar" *ngIf="ShowSearchbar == true">
+          <div class="input-group" style="padding-top: 10px ;padding-bottom: 10px">
+            <input
+              type="text"
+              [(ngModel)]="searchbar"
+              class="form-control"
+              placeholder="Search"
+
+              (keyup.enter)="search(searchbar)"
+            />
+            <div class="input-group-btn">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                (click)="search(searchbar)"
+              >
+                <i class="fa fa-search fa-fw"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-2 col-sm-2"></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <img src="{{userprofile}}" routerLink="/account" class="profile clickable"/>
+      <a routerLinkActive="active" routerLink="/home">Home</a>
+
+      <a routerLinkActive="active" routerLink="/knowledge">Knowledge</a>
+
+      <a routerLinkActive="active" routerLink="/projects">Projects</a>
+
+      <a routerLinkActive="active" routerLink="/contact">Contact</a>
+      <span class="fa-stack fa-1x clickable" (click)="myScript()">
+        <i class="background fa fa-circle fa-stack-2x white"></i>
+        <i class="fa {{themebtn}} fa-stack-1x black"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>
+<footer>
+  <div id="contact" class="container">
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1 text-center">
+        <h4><strong>Rafael Dee Software Development</strong></h4>
+
+        <ul class="list-unstyled">
+          <li>
+            <i class="fa fa-envelope-o fa-fw"></i>
+            <a href="mailto:dryestboot@gmail.com">dryestboot@gmail.com</a>
+          </li>
+        </ul>
+        <br />
+        <hr class="small" />
+        <p class="text-muted">
+          Copyright © deez-portfolio.firebaseapp.com 2021
+        </p>
+        <a routerLinkActive="active" routerLink="/privacypolicy">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>

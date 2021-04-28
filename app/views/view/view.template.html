@@ -1,0 +1,76 @@
+<div class="view " *ngIf="loaded; else loading">
+  <div *ngIf="!notfound; else notFound">
+    <div class="viewHeader">
+      <button type="button" class="btn btn-primary" routerLink="/projects/edit" [queryParams]="{ id: ID }" *ngIf="privilages == 0"><i class="fa fa-pencil"></i></button>
+      <div class="row align-items-center">
+        <div class="col-xs-12 col-sm-8 col-md-7 text-center">
+          <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 "></div>
+          <div class="col-xs-10 col-sm-10 col-md-10 col-lg-8">
+            <iframe class="video" *ngIf="videoUrl!=''; else image" frameborder="0" allowfullscreen [src]="videoUrl">
+            </iframe>
+            <ng-template #image>
+              <img class="maxwidth" src="{{Thumbnail}}">
+            </ng-template>
+          </div>
+          <div class="col-xs-1  col-sm-1 col-md-1 col-lg-2 "></div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-5">
+          <div class="headerText">
+            <h1 class="shadow-lg p-3 mb-5 bg-black rounded">{{Title}}</h1>
+            <h2>{{Subtitle}}</h2>
+          </div>
+        </div>
+        <div class="col-xs-12 scroll">
+          <p>scroll down..</p>
+        </div>
+      </div>
+    </div>
+    <section id="about" class="about HTMLcontent">
+      <div class="container">
+        <div class="row">
+          <div class="content">
+            <div *ngFor="let item of list;let i = index">
+              <div *ngIf="item.type == 'paragraph'">
+                <p>{{item.content}}</p>
+              </div>
+
+              <div *ngIf="item.type=='pre'">
+                <pre>{{item.content}}</pre>
+              </div>
+
+              <div *ngIf="item.type == 'image'">
+                <div>
+                  <div class="row">
+                    <div class="col-xs-3 col-sm-4 col-lg-5"></div>
+                    <div class="col-xs-6 col-sm-4 col-lg-2">
+                      <img src="{{item.content}}" />
+                    </div>
+                    <div class="col-xs-3 col-sm-4 col-lg-5"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <ng-template #notFound>
+    <section id="notfound">
+      <div class="text-center">
+        <span class="fa-stack fa-2x">
+      <i class="fa fa-exclamation  fa-stack-2x"></i>
+    </span>
+        <p class="notfoundtxt"><b>404</b></p>
+        <p>not found</p>
+      </div>
+    </section>
+  </ng-template>
+</div>
+
+<ng-template #loading>
+  <div class="text-center" *ngIf="!loaded">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+  </div>
+</ng-template>

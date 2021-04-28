@@ -1,0 +1,63 @@
+<section id="account">
+  <div *ngIf="loaded; else loading">
+    <div class="container" *ngIf="user == null; else manageAccount">
+      <div class="row">
+
+        <div class="col-lg-10 col-lg-offset-1">
+          <div class="row">
+            <div class="col-xs-1 col-sm-2 col-md-3">
+            </div>
+
+            <div class="col-xs-10 col-sm-8 col-md-6 dialog">
+              <div id="login" *ngIf="user == null">
+                <h3 class="text-center">
+                  <strong>Login</strong>
+                </h3>
+                <div class="row">
+                  <div class="col-md-12"> <a class="btn btn-lg btn-google btn-block btn-outline"
+                      (click)="signIn(0)"><img src="https://img.icons8.com/color/16/000000/google-logo.png"><strong> Signin </strong></a>
+                  </div>
+                  <div class="col-md-12"> <a class="btn btn-lg btn-facebook btn-block btn-outline"
+                      (click)="signIn(1)"><img src="https://cdn.icon-icons.com/icons2/2108/PNG/512/facebook_icon_130940.png" style="width:15px; height:15px"><strong> Signin </strong></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-1 col-sm-2 col-md-3">
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    <ng-template #manageAccount>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="col-xs-2">
+              <img src="{{user.photoURL}}"/>
+            </div>
+            <div class="col-xs-10">
+              <p>{{user.displayName}}</p>
+              <p>{{user.email}}
+            </div>
+          </div>
+          <div class="col-xs-12">
+
+          </div>
+        </div>
+      </div>
+      <p (click)="signOut()">logout</p>
+    </ng-template>
+
+  </div>
+  <ng-template #loading>
+    <div class="container text-center">
+      <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    </div>
+  </ng-template>
+</section>
