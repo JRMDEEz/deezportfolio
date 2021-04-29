@@ -15,7 +15,7 @@ export const firebaseConfig = {
 var getOptions = {};
 
 export class firebaseHelper {
-  private db;
+  private db: firebase.firestore.Firestore;
   private app;
   static instance: firebaseHelper;
 
@@ -61,9 +61,12 @@ export class firebaseHelper {
   getProjects() {
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
-        this.db
-          .collection("Projects")
-          .where("public", "==", priv == Privilages.Admin)
+        var dbtmp: firebase.firestore.Query = this.db.collection("Projects");
+        if (priv != Privilages.Admin) {
+          dbtmp = this.db.collection("Projects").where("public", "==", true);
+        }
+
+        dbtmp
           .get(getOptions)
           .then(result => {
             resolve(result);
@@ -76,14 +79,21 @@ export class firebaseHelper {
   }
   getPrivilages() {
     return new Promise((resolve, reject) => {
-      if (firebase.auth().currentUser == null) resolve(Privilages.Guset);
+      if (firebase.auth().currentUser == null) {
+        resolve(Privilages.Guset);
+        return;
+      }
       this.db
         .collection("Admins")
         .doc(firebase.auth().currentUser.uid)
         .get(getOptions)
         .then(result => {
-          if (result != null) resolve(Privilages.Admin);
+          if (result != null) {
+            resolve(Privilages.Admin);
+            return;
+          }
           resolve(Privilages.User);
+          return;
         });
     });
   }
@@ -128,7 +138,7 @@ export class firebaseHelper {
         Content: new Array()
       });
   }
-  updateProject(projcectId, title, subtitle, thumbnail, ytId, _Content: any[]) {
+  updateProject(projcectId, title, subtitle, thumbnail, ytId,publicView :boolean, _Content: any[]) {
     //TODO every newline will be replaced by /n, put content into array,
     _Content.forEach(item => {
       if (item.type != "image") {

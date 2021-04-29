@@ -19,6 +19,7 @@ export class EditorViewComponent {
   Thumbnail = "";
   list = [];
   ID;
+  publicView = true;
   validTypes = [
     {
       name: "paragraph",
@@ -67,6 +68,7 @@ export class EditorViewComponent {
           this.loaded = true;
           if (doc.exists) {
             this.Title = doc.data().Title;
+            this.publicView = doc.data().publicView;
             if (doc.data().Subtitle) this.Subtitle = doc.data().Subtitle;
             if (doc.data().YTid != "" && doc.data().YTid != null) {
               this.updateVideoUrl(doc.data().YTid);
@@ -123,6 +125,7 @@ export class EditorViewComponent {
         this.Subtitle,
         this.Thumbnail,
         this.videoUrl,
+        this.publicView,
         this.list
       )
       .then(() => {
