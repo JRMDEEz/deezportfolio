@@ -129,17 +129,14 @@ export class firebaseHelper {
   }
   createProject(title) {
     //TODO every newline will be replaced by /n, put content into array,
-    return this.db
-      .collection("Projects")
-      .doc()
-      .set({
-        Title: title,
-        publicView: false,
-        Searchterm: title.toLowerCase(),
-        Thumbnail:
-          "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
-        Content: new Array()
-      });
+    return this.db.collection("Projects").add({
+      Title: title,
+      publicView: false,
+      Searchterm: title.toLowerCase(),
+      Thumbnail:
+        "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
+      Content: new Array()
+    });
   }
   updateProject(
     projcectId,

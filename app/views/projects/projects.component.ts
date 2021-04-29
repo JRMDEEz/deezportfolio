@@ -109,8 +109,8 @@ export class ProjectsViewComponent {
     this.firebaseHelper
       .createProject("New Project")
       .then(doc => {
+        console.log(doc);
         this.loaded = true;
-        this.add(doc.id, doc.data().Thumbnail, "New Project");
       })
       .catch(err => {
         this.loaded = true;
