@@ -10,7 +10,6 @@ import { PrivacyPolicyViewComponent } from "./views/privacypolicy/privacypolicy.
 import { ViewComponent } from "./views/view/view.component";
 import { AccountViewComponent } from "./views/account/account.component";
 import { EditorViewComponent } from "./views/editor/editor.component";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 @NgModule({
   declarations: [
@@ -26,7 +25,6 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     RouterModule.forRoot([
       { path: "", pathMatch: "full", redirectTo: "home" },
