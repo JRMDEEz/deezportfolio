@@ -16,19 +16,19 @@
 
         <hr class="xsall" />
         <div class="row thin-gutters" *ngIf="loaded">
+
           <div *ngFor="let r of range;let i = index">
-            <div
-              class="service-item clickable"
-              routerLink="../projects/view"
-              [queryParams]="{ id: r.id }"
-            >
-              <img
-                class=" img-responsive"
-                src="{{r.imgthumb}} "
-                style="width:100%"
-              />
-              <div class="w-100"></div>
-              <p><strong>{{r.title}}</strong></p>
+
+            <div class="col-md-4 col-sm-5 col-xs-10">
+              <div class="service-item clickable" routerLink="../projects/view" [queryParams]="{ id: r.id }">
+                <img
+                  class=" img-responsive"
+                  src="{{r.imgthumb}} "
+                  style="width:100%"
+                />
+                <div class="w-100"></div>
+                <p><strong>{{r.title}}</strong></p>
+              </div>
             </div>
           </div>
         </div>
