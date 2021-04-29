@@ -52,6 +52,7 @@ export class firebaseHelper {
   getAuth() {
     return firebase.auth();
   }
+  //FIC PRIVILAGES
   getProject(projectId: string) {
     return this.db
       .collection("Projects")
@@ -103,12 +104,28 @@ export class firebaseHelper {
   }
   searchProjcets(search) {
     var Search = search.toLowerCase();
-    return this.db
-      .collection("Projects")
-      .orderBy("Searchterm")
-      .startAt(Search)
-      .endAt(Search + "~")
-      .get(getOptions);
+    return new Promise((resolve, reject) => {
+      this.getPrivilages().then(priv => {
+        var dbtmp: firebase.firestore.Query = this.db.collection("Projects");
+        if (priv != Privilages.Admin) {
+          dbtmp = this.db
+            .collection("Projects")
+            .where("publicView", "==", true);
+        }
+
+        dbtmp
+          .orderBy("Searchterm")
+          .startAt(Search)
+          .endAt(Search + "~")
+          .get(getOptions)
+          .then(result => {
+            resolve(result);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    });
   }
   createProject(title) {
     //TODO every newline will be replaced by /n, put content into array,
@@ -118,6 +135,7 @@ export class firebaseHelper {
       .set({
         Title: title,
         publicView: false,
+        Searchterm: title.toLowerCase(),
         Thumbnail:
           "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
         Content: new Array()
@@ -150,6 +168,7 @@ export class firebaseHelper {
         Subtitle: subtitle,
         Thumbnail: thumbnail,
         YTid: ytId,
+        Searchterm: title.toLowerCase(),
         publicView: publicView,
         Content: _Content
       });
