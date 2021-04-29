@@ -183,7 +183,7 @@ export enum SignInProvider {
   FacebookAuthProvider
 }
 export enum Privilages {
-  Admin,
+  Guset,
   User,
-  Guset
+  Admin,
 }
