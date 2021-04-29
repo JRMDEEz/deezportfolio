@@ -90,17 +90,18 @@ export class firebaseHelper {
       firebase.auth().onAuthStateChanged(user => {
         if (user == null) {
           resolve(Privilages.Guset);
+        } else {
+          this.db
+            .collection("Admins")
+            .doc(user.uid)
+            .get(getOptions)
+            .then(result => {
+              if (result.exists) {
+                resolve(Privilages.Admin);
+              }
+              resolve(Privilages.User);
+            });
         }
-        this.db
-          .collection("Admins")
-          .doc(user.uid)
-          .get(getOptions)
-          .then(result => {
-            if (result.exists) {
-              resolve(Privilages.Admin);
-            }
-            resolve(Privilages.User);
-          });
       });
     });
   }
