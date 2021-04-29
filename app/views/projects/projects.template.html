@@ -2,20 +2,31 @@
   <div class="container">
     <div class="row no-gutters">
       <div class="col-lg-12 col-xs-offset-2 col-sm-offset-2 col-md-offset-0">
-        <h2>Projects
-          <button *ngIf="privilages == 3"type="button" class="btn btn-primary" (click)="saveProject()"><i class="fa fa-plus"></i></button>
+        <h2>
+          Projects
+          <button
+            *ngIf="privilages == 3"
+            type="button"
+            class="btn btn-primary"
+            (click)="createProject()"
+          >
+            <i class="fa fa-plus"></i>
+          </button>
         </h2>
 
         <hr class="xsall" />
         <div class="row thin-gutters" *ngIf="loaded">
-
           <div *ngFor="let r of range;let i = index">
-            <div class="service-item clickable" routerLink="../projects/view" [queryParams]="{ id: r.id }">
+            <div
+              class="service-item clickable"
+              routerLink="../projects/view"
+              [queryParams]="{ id: r.id }"
+            >
               <img
-                  class=" img-responsive"
-                  src="{{r.imgthumb}} "
-                  style="width:100%"
-                />
+                class=" img-responsive"
+                src="{{r.imgthumb}} "
+                style="width:100%"
+              />
               <div class="w-100"></div>
               <p><strong>{{r.title}}</strong></p>
             </div>
@@ -27,5 +38,4 @@
       </div>
     </div>
   </div>
-
 </section>

@@ -92,6 +92,13 @@ export class ProjectsViewComponent {
         console.log("Error getting documents: ", error);
       });
   }
+  createProject(){
+    this.loaded = false;
+    this.firebaseHelper.createProject("New Project").then((doc) => {
+        this.loaded = true;
+        this.add(doc.id,doc.data().Thumbnail,"New Project");
+      });
+  }
   add(id: string, imgthumb: string, title: string) {
     this.range.push({ id: id, imgthumb: imgthumb, title: title });
   }

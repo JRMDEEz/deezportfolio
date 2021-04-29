@@ -101,6 +101,16 @@ export class firebaseHelper {
         Contetnt: _Content
       });
   }
+  createProject(title) {
+    //TODO every newline will be replaced by /n, put content into array,
+    return this.db
+      .collection("Projects")
+      .doc()
+      .set({
+        Title: title,
+        Thumbnail: "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png"
+      });
+  }
   updateProject(projcectId, title, subtitle, thumbnail, ytId, _Content: any[]) {
     //TODO every newline will be replaced by /n, put content into array,
     _Content.forEach(item => {
