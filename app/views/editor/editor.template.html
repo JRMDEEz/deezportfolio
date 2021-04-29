@@ -43,19 +43,6 @@
     </div>
     <section id="about" class="about HTMLcontent">
       <div class="container">
-        <div class="dropdown" dropdown>
-          <i
-            class="fa fa-plus fa-2x clickable dropdown-toggle"
-            dropdownToggle
-            aria-controls="dropdown-basic"
-          ></i>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-            <li role="menuitem" *ngFor="let validtype of validTypes">
-              <a class="dropdown-item clickable"
-                (click)="appendNew(validtype.name)"><i class="fa fa-{{validtype.icon}}"></i> {{validtype.value}}</a>
-            </li>
-          </ul>
-        </div>
         <div class="row">
           <div class="content">
             <div *ngFor="let item of list;let i = index">
