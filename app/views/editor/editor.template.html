@@ -2,7 +2,7 @@
   <div *ngIf="!notfound; else notFound">
     <div class="viewHeader">
       <button type="button" class="btn btn-primary" (click)="saveProject()"><i class="fa fa-floppy-o"></i></button>
-      <button type="button" class="btn btn-primary" (click)="publicView != publicView"><p *ngIf="publicView;else private">Public</p><ng-template #private><p>Private</p></ng-template></i></button>
+      <button type="button" class="btn btn-primary" (click)="publicView != publicView"><p *ngIf="publicView;else private">Public</p><ng-template #private><p>Private</p></ng-template></button>
       <div class="row align-items-center">
         <div class="col-xs-12 col-sm-8 col-md-7 text-center">
           <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 "></div>
