@@ -81,22 +81,24 @@ export class firebaseHelper {
   }
   getPrivilages() {
     return new Promise((resolve, reject) => {
-      if (firebase.auth().currentUser == null) {
-        resolve(Privilages.Guset);
-        return;
-      }
-      this.db
-        .collection("Admins")
-        .doc(firebase.auth().currentUser.uid)
-        .get(getOptions)
-        .then(result => {
-          if (result != null) {
-            resolve(Privilages.Admin);
-            return;
-          }
-          resolve(Privilages.User);
+      firebase.auth().onAuthStateChanged(user => {
+        if (user == null) {
+          resolve(Privilages.Guset);
           return;
-        });
+        }
+        this.db
+          .collection("Admins")
+          .doc(user.uid)
+          .get(getOptions)
+          .then(result => {
+            if (result != null) {
+              resolve(Privilages.Admin);
+              return;
+            }
+            resolve(Privilages.User);
+            return;
+          });
+      });
     });
   }
   searchProjcets(search) {
