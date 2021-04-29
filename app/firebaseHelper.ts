@@ -108,25 +108,6 @@ export class firebaseHelper {
       .endAt(Search + "~")
       .get(getOptions);
   }
-  uploadProject(title, subtitle, thumbnail, ytId, _Content: any[]) {
-    //TODO every newline will be replaced by /n, put content into array,
-    if (_Content == null) _Content = new Array();
-    _Content.forEach(item => {
-      if (item.type != "image") {
-        item.content.replaceAll("\\n", "\n");
-      }
-    });
-    return this.db
-      .collection("Projects")
-      .doc()
-      .set({
-        Title: title,
-        Subtitle: subtitle,
-        Thumbnail: thumbnail,
-        YTid: ytId,
-        Contetnt: _Content
-      });
-  }
   createProject(title) {
     //TODO every newline will be replaced by /n, put content into array,
     return this.db
@@ -134,7 +115,7 @@ export class firebaseHelper {
       .doc()
       .set({
         Title: title,
-        public: false,
+        publicView: false,
         Thumbnail:
           "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
         Content: new Array()
@@ -167,6 +148,7 @@ export class firebaseHelper {
         Subtitle: subtitle,
         Thumbnail: thumbnail,
         YTid: ytId,
+        publicView: publicView,
         Content: _Content
       });
   }
