@@ -14,6 +14,7 @@ export class EditorViewComponent {
   notfound = false;
   loaded = false;
   videoUrl = "";
+  YTid;
   Title = "Inset title here";
   Subtitle = "Insert text here";
   Thumbnail = "";
@@ -71,6 +72,7 @@ export class EditorViewComponent {
             this.publicView = doc.data().publicView;
             if (doc.data().Subtitle) this.Subtitle = doc.data().Subtitle;
             if (doc.data().YTid != "" && doc.data().YTid != null) {
+              this.YTid = doc.data().YTid;
               this.updateVideoUrl(doc.data().YTid);
             } else {
               this.Thumbnail = doc.data().Thumbnail;
@@ -89,8 +91,8 @@ export class EditorViewComponent {
       }
     });
   }
-  setView(){
-    this.publicView = ! this.publicView;
+  setView() {
+    this.publicView = !this.publicView;
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {
@@ -123,7 +125,7 @@ export class EditorViewComponent {
         this.Title,
         this.Subtitle,
         this.Thumbnail,
-        this.videoUrl,
+        this.YTid,
         this.publicView,
         this.list
       )
