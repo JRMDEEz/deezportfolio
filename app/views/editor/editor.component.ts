@@ -14,7 +14,7 @@ export class EditorViewComponent {
   notfound = false;
   loaded = false;
   videoUrl = "";
-  YTid;
+  YTid = "";
   Title = "Inset title here";
   Subtitle = "Insert text here";
   Thumbnail = "";
