@@ -1,7 +1,7 @@
 <div class="view " *ngIf="loaded; else loading">
   <div *ngIf="!notfound; else notFound">
     <div class="viewHeader">
-      <button type="button" class="btn btn-primary" routerLink="/projects/edit" [queryParams]="{ id: ID }" *ngIf="privilages == 3"><i class="fa fa-pencil"></i></button>
+      <button type="button" class="btn btn-primary" routerLink="/projects/edit" [queryParams]="{ id: ID }" *ngIf="privilages == 2"><i class="fa fa-pencil"></i></button>
       <div class="row align-items-center">
         <div class="col-xs-12 col-sm-8 col-md-7 text-center">
           <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 "></div>
