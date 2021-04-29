@@ -29,12 +29,11 @@ UpdateUI();
   //templateUrl: "./views/view/view.template",
   //templateUrl: "./views/tempo.template",
   //templateUrl: "./views/login/login.template",
-  //templateUrl: "./views/editor/editor.template",
-  templateUrl: "./app.template",
+  templateUrl: "./views/editor/editor.template",
+  // templateUrl: "./app.template",
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  
   //DEBUG FOR EditorViewComponent
   validTypes = [
     {
@@ -42,15 +41,15 @@ export class AppComponent {
       icon: "paragraph",
       value: "Title",
       blank: {
-        text: ""
+        content: ""
       }
     },
     {
       type: "reeee",
       icon: "paragraph",
-      value: "Titrele",
+      value: "Title",
       blank: {
-        text: ""
+        content: ""
       }
     }
   ];
@@ -60,10 +59,10 @@ export class AppComponent {
   Title = "Crave";
   Subtitle = "food delivery app!";
   list = [
-    { type: "paragraph", text: "asdasdasdreeeeee" },
+    { type: "paragraph", content: "asdasdasdreeeeee" },
     {
       type: "pre",
-      text: `public void reee(){
+      content: `public void reee(){
       asd();
     }`
     }
@@ -82,7 +81,10 @@ export class AppComponent {
       if (val instanceof NavigationEnd) {
         var tmp: boolean =
           val.url.toString().includes("/projects") &&
-          !(val.url.toString().includes("/view") || val.url.toString().includes("/edit"));
+          !(
+            val.url.toString().includes("/view") ||
+            val.url.toString().includes("/edit")
+          );
         console.log("ShowSearchbar = " + tmp);
         if (this.ShowSearchbar != tmp) {
           this.ShowSearchbar = tmp;
