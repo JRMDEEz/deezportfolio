@@ -45,29 +45,11 @@
         <div class="row">
           <div class="content">
             <div *ngFor="let item of list;let i = index">
-              <div class="dropdown" dropdown>
-                <i
-                  class="fa fa-pencil fa-fw clickable dropdown-toggle"
-                  dropdownToggle
-                  aria-controls="dropdown-basic"
-                ></i>
-                <ul id="dropdown-basic" class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-                  <li role="menuitem">
-                    <p class="dropdown-item text-center">
-                      <i class="fa fa-plus"></i> Add
-                    </p>
-                  </li>
-                  <li role="menuitem" *ngFor="let validtype of validTypes">
-                    <a class="dropdown-item clickable"
-                      (click)="appendNext(i,validtype.name)"><i class="fa fa-{{validtype.icon}}"></i>
-                      {{validtype.value}}</a>
-                  </li>
-                  <li class="divider dropdown-divider"></li>
-                  <li role="menuitem">
-                    <a class="dropdown-item" (click)="deleteItem(i)"><i class="fa fa-trash"></i> Delete</a>
-                  </li>
-                </ul>
-              </div>
+              <select id="sel1" name="Country" class="rounded-inputs20 select-select col-md-3">
+    <option *ngFor="let validtype of validTypes" [value]="city">{{validtype.value}}</option>  
+
+  </select>
+
               <div *ngIf="item.type == 'paragraph'">
                 <p contenteditable="true" (input)="item.content=$event.target.innerText" [textContent]="item.content">
                 </p>
@@ -89,7 +71,7 @@
                   </div>
                 </div>
               </div>
-              
+
             </div>
           </div>
         </div>
