@@ -59,11 +59,6 @@
         <div class="row">
           <div class="content">
             <div *ngFor="let item of list;let i = index">
-              <select id="sel1" name="Country" class="rounded-inputs20 select-select col-md-3">
-    <option *ngFor="let validtype of validTypes" [value]="city">{{validtype.value}}</option>  
-
-  </select>
-
               <div *ngIf="item.type == 'paragraph'">
                 <p contenteditable="true" (input)="item.content=$event.target.innerText" [textContent]="item.content">
                 </p>
