@@ -30,6 +30,9 @@ export class firebaseHelper {
       firebase
         .firestore()
         .enablePersistence()
+        .then(() => {
+          console.log("cache success!");
+        })
         .catch(err => {
           console.log(err.code);
           if (err.code == "failed-precondition") {
@@ -52,7 +55,7 @@ export class firebaseHelper {
   getAuth() {
     return firebase.auth();
   }
-  //FIC PRIVILAGES
+  //FIX PRIVILAGES
   getProject(projectId: string) {
     return this.db
       .collection("Projects")
@@ -62,11 +65,11 @@ export class firebaseHelper {
   getProjects() {
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
-        var dbtmp: firebase.firestore.Query = this.db.collection("Projects");
-        if (priv != Privilages.Admin) {
-          dbtmp = this.db
-            .collection("Projects")
-            .where("publicView", "==", true);
+        var dbtmp: firebase.firestore.Query = this.db
+          .collection("Projects")
+          .where("publicView", "==", true);
+        if (priv == Privilages.Admin) {
+          dbtmp = this.db.collection("Projects");
         }
 
         dbtmp
@@ -106,11 +109,11 @@ export class firebaseHelper {
     var Search = search.toLowerCase();
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
-        var dbtmp: firebase.firestore.Query = this.db.collection("Projects");
-        if (priv != Privilages.Admin) {
-          dbtmp = this.db
-            .collection("Projects")
-            .where("publicView", "==", true);
+        var dbtmp: firebase.firestore.Query = this.db
+          .collection("Projects")
+          .where("publicView", "==", true);
+        if (priv == Privilages.Admin) {
+          dbtmp = this.db.collection("Projects");
         }
 
         dbtmp

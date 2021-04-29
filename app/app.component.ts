@@ -85,7 +85,6 @@ export class AppComponent {
             val.url.toString().includes("/view") ||
             val.url.toString().includes("/edit")
           );
-        console.log("ShowSearchbar = " + tmp);
         if (this.ShowSearchbar != tmp) {
           this.ShowSearchbar = tmp;
         }
@@ -156,4 +155,3 @@ function UpdateUI() {
   }
   setCookie("isDarkMode", String(isDarkMode));
 }
-console.log("running@ " + document.location.href);

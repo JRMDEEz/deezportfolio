@@ -50,7 +50,6 @@ export class ViewComponent {
     });
   }
   appendItem(item) {
-    console.log("Adding " + item.type + " to list, CONTENT: " + item.content);
     this.list.push(item);
   }
   updateVideoUrl(id: string) {
