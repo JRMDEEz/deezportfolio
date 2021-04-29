@@ -81,7 +81,7 @@ export class ProjectsViewComponent {
       .catch(err => {
         this.loaded = true;
         this.notfound = true;
-        console.log("Error getting documents: ", error);
+        console.log("Error getting documents: ", err);
       });
   }
   search(search) {

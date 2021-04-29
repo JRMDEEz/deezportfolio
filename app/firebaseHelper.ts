@@ -68,8 +68,10 @@ export class firebaseHelper {
         var dbtmp: firebase.firestore.Query = this.db
           .collection("Projects")
           .where("publicView", "==", true);
+        console.log("GUSET or USER");
         if (priv == Privilages.Admin) {
           dbtmp = this.db.collection("Projects");
+          console.log("ADMIN");
         }
 
         dbtmp
@@ -88,19 +90,16 @@ export class firebaseHelper {
       firebase.auth().onAuthStateChanged(user => {
         if (user == null) {
           resolve(Privilages.Guset);
-          return;
         }
         this.db
           .collection("Admins")
           .doc(user.uid)
           .get(getOptions)
           .then(result => {
-            if (result != null) {
+            if (result.exists) {
               resolve(Privilages.Admin);
-              return;
             }
             resolve(Privilages.User);
-            return;
           });
       });
     });
