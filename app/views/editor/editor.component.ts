@@ -81,6 +81,7 @@ export class EditorViewComponent {
                 this.appendItem(item);
               });
           } else {
+            this.loaded = true;
             this.notfound = true;
             console.log("No such document!");
           }
@@ -95,20 +96,15 @@ export class EditorViewComponent {
     return a.blank;
   }
   appendItem(item) {
-    console.log("Adding " + item.type + " to list, CONTENT: " + item.content);
     this.list.push(item);
   }
   appendNew(type: string) {
-    console.log("Adding " + type + " to list");
     this.list.splice(0, 0, JSON.parse(JSON.stringify(this.blankObject(type))));
   }
   appendNext(index: number, type: string) {
-    console.log("INDEX " + index);
     if (index >= this.list.length - 1) {
-      console.log("PUSH " + type + " to list");
       this.list.push(JSON.parse(JSON.stringify(this.blankObject(type))));
     } else {
-      console.log("Adding " + type + " to list");
       this.list.splice(
         index + 1,
         0,
@@ -137,6 +133,7 @@ export class EditorViewComponent {
       })
       .catch(error => {
         this.loaded = true;
+        this.notfound = true;
         console.log(error);
       });
   }

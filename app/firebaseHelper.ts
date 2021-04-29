@@ -63,7 +63,9 @@ export class firebaseHelper {
       this.getPrivilages().then(priv => {
         var dbtmp: firebase.firestore.Query = this.db.collection("Projects");
         if (priv != Privilages.Admin) {
-          dbtmp = this.db.collection("Projects").where("public", "==", true);
+          dbtmp = this.db
+            .collection("Projects")
+            .where("publicView", "==", true);
         }
 
         dbtmp
@@ -138,7 +140,15 @@ export class firebaseHelper {
         Content: new Array()
       });
   }
-  updateProject(projcectId, title, subtitle, thumbnail, ytId,publicView :boolean, _Content: any[]) {
+  updateProject(
+    projcectId,
+    title,
+    subtitle,
+    thumbnail,
+    ytId,
+    publicView: boolean,
+    _Content: any[]
+  ) {
     //TODO every newline will be replaced by /n, put content into array,
     _Content.forEach(item => {
       if (item.type != "image") {

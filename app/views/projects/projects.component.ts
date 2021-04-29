@@ -69,13 +69,20 @@ export class ProjectsViewComponent {
   } //end Oninit
   getprojects() {
     this.loaded = false;
-    this.firebaseHelper.getProjects().then((querySnapshot: any[]) => {
-      this.loaded = true;
-      querySnapshot.forEach(doc => {
+    this.firebaseHelper
+      .getProjects()
+      .then((querySnapshot: any[]) => {
         this.loaded = true;
-        this.add(doc.id, doc.data().Thumbnail, doc.data().Title);
+        querySnapshot.forEach(doc => {
+          this.loaded = true;
+          this.add(doc.id, doc.data().Thumbnail, doc.data().Title);
+        });
+      })
+      .catch(err => {
+        this.loaded = true;
+        this.notfound = true;
+        console.log("Error getting documents: ", error);
       });
-    });
   }
   search(search) {
     this.loaded = false;
@@ -91,8 +98,9 @@ export class ProjectsViewComponent {
         });
       })
       .catch(error => {
-        console.log("Error getting documents: ", error);
+        this.loaded = true;
         this.notfound = true;
+        console.log("Error getting documents: ", error);
       });
   }
   createProject() {
@@ -105,6 +113,7 @@ export class ProjectsViewComponent {
         this.add(doc.id, doc.data().Thumbnail, "New Project");
       })
       .catch(err => {
+        this.loaded = true;
         this.notfound = true;
         console.log(err);
       });
