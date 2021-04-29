@@ -10,6 +10,7 @@ import { PrivacyPolicyViewComponent } from "./views/privacypolicy/privacypolicy.
 import { ViewComponent } from "./views/view/view.component";
 import { AccountViewComponent } from "./views/account/account.component";
 import { EditorViewComponent } from "./views/editor/editor.component";
+import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 @NgModule({
   declarations: [
     ContactViewComponent,
@@ -20,10 +21,11 @@ import { EditorViewComponent } from "./views/editor/editor.component";
     KnowledgeViewComponent,
     ViewComponent,
     AccountViewComponent,
-    EditorViewComponent,
+    EditorViewComponent
   ],
   imports: [
     BrowserModule,
+    BsDropdownModule.forRoot(),
     RouterModule.forRoot([
       { path: "", pathMatch: "full", redirectTo: "home" },
       { path: "home", component: HomeViewComponent },

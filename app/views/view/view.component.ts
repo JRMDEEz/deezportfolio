@@ -20,7 +20,7 @@ export class ViewComponent {
   Thumbnail;
   ID;
   list = [];
-  privilages;
+  private privilages;
   private firebaseHelper: firebaseHelper = firebaseHelper.getInstance();
   constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer) {}
   ngOnInit() {

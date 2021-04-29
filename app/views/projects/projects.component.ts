@@ -30,6 +30,7 @@ export class ProjectsViewComponent {
   public range = [];
   loaded = false;
   Search;
+  private privilages;
   private firebaseHelper: firebaseHelper = firebaseHelper.getInstance();
   constructor(private route: ActivatedRoute, private router: Router) {}
   ngOnInit() {
@@ -46,7 +47,10 @@ export class ProjectsViewComponent {
       if (val instanceof NavigationEnd) {
         if (
           val.url.toString().includes("/projects") &&
-          !(val.url.toString().includes("/view") || val.url.toString().includes("/edit"))
+          !(
+            val.url.toString().includes("/view") ||
+            val.url.toString().includes("/edit")
+          )
         ) {
           var search = this.route.snapshot.queryParams.Search;
           if (search == undefined) {
@@ -57,6 +61,9 @@ export class ProjectsViewComponent {
           }
         }
       }
+    });
+    this.firebaseHelper.getPrivilages().then(priv => {
+      this.privilages = priv;
     });
   } //end Oninit
   getprojects() {
