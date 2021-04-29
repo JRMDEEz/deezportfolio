@@ -74,9 +74,8 @@ export class EditorViewComponent {
             if (doc.data().YTid != "" && doc.data().YTid != null) {
               this.YTid = doc.data().YTid;
               this.updateVideoUrl(doc.data().YTid);
-            } else {
-              this.Thumbnail = doc.data().Thumbnail;
             }
+            this.Thumbnail = doc.data().Thumbnail;
             var contentlist = doc.data().Content;
             if (contentlist != null)
               contentlist.forEach(item => {
