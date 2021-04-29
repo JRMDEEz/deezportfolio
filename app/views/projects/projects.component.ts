@@ -30,7 +30,8 @@ export class ProjectsViewComponent {
   public range = [];
   loaded = false;
   Search;
-  private privilages;
+  privilages;
+  notfound = false;
   private firebaseHelper: firebaseHelper = firebaseHelper.getInstance();
   constructor(private route: ActivatedRoute, private router: Router) {}
   ngOnInit() {
@@ -68,7 +69,7 @@ export class ProjectsViewComponent {
   } //end Oninit
   getprojects() {
     this.loaded = false;
-    this.firebaseHelper.getProjects().then(querySnapshot => {
+    this.firebaseHelper.getProjects().then((querySnapshot: any[]) => {
       this.loaded = true;
       querySnapshot.forEach(doc => {
         this.loaded = true;
@@ -78,10 +79,11 @@ export class ProjectsViewComponent {
   }
   search(search) {
     this.loaded = false;
+    this.notfound = false;
     this.clear();
     console.log("searching");
     this.firebaseHelper
-      .seearchProjcets(search)
+      .searchProjcets(search)
       .then(querySnapshot => {
         this.loaded = true;
         querySnapshot.forEach(doc => {
@@ -90,13 +92,21 @@ export class ProjectsViewComponent {
       })
       .catch(error => {
         console.log("Error getting documents: ", error);
+        this.notfound = true;
       });
   }
-  createProject(){
+  createProject() {
     this.loaded = false;
-    this.firebaseHelper.createProject("New Project").then((doc) => {
+    this.notfound = false;
+    this.firebaseHelper
+      .createProject("New Project")
+      .then(doc => {
         this.loaded = true;
-        this.add(doc.id,doc.data().Thumbnail,"New Project");
+        this.add(doc.id, doc.data().Thumbnail, "New Project");
+      })
+      .catch(err => {
+        this.notfound = true;
+        console.log(err);
       });
   }
   add(id: string, imgthumb: string, title: string) {

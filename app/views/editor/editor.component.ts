@@ -14,9 +14,9 @@ export class EditorViewComponent {
   notfound = false;
   loaded = false;
   videoUrl = "";
-  Title;
-  Subtitle;
-  Thumbnail;
+  Title = "Inset title here";
+  Subtitle = "Insert text here";
+  Thumbnail = "";
   list = [];
   ID;
   validTypes = [
@@ -67,16 +67,17 @@ export class EditorViewComponent {
           this.loaded = true;
           if (doc.exists) {
             this.Title = doc.data().Title;
-            this.Subtitle = doc.data().Subtitle;
-            if (doc.data().YTid != "") {
+            if (doc.data().Subtitle) this.Subtitle = doc.data().Subtitle;
+            if (doc.data().YTid != "" && doc.data().YTid != null) {
               this.updateVideoUrl(doc.data().YTid);
             } else {
               this.Thumbnail = doc.data().Thumbnail;
             }
             var contentlist = doc.data().Content;
-            contentlist.forEach(item => {
-              this.appendItem(item);
-            });
+            if (contentlist != null)
+              contentlist.forEach(item => {
+                this.appendItem(item);
+              });
           } else {
             this.notfound = true;
             console.log("No such document!");

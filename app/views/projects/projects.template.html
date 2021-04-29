@@ -15,26 +15,41 @@
         </h2>
 
         <hr class="xsall" />
-        <div class="row thin-gutters" *ngIf="loaded">
+        <div class="row thin-gutters" *ngIf="loaded; else loading">
+          <div  *ngIf="!notfound; else notFound">
+            <div *ngFor="let r of range;let i = index">
 
-          <div *ngFor="let r of range;let i = index">
-
-            <div class="col-md-4 col-sm-5 col-xs-10">
-              <div class="service-item clickable" routerLink="../projects/view" [queryParams]="{ id: r.id }">
-                <img
+              <div class="col-md-4 col-sm-5 col-xs-10">
+                <div class="service-item clickable" routerLink="../projects/view" [queryParams]="{ id: r.id }">
+                  <img
                   class=" img-responsive"
                   src="{{r.imgthumb}} "
                   style="width:100%"
                 />
-                <div class="w-100"></div>
-                <p><strong>{{r.title}}</strong></p>
+                  <div class="w-100"></div>
+                  <p><strong>{{r.title}}</strong></p>
+                </div>
               </div>
             </div>
           </div>
+          <ng-template #notFound>
+          <section id="notfound">
+            <div class="text-center">
+              <span class="fa-stack fa-2x">
+          <i class="fa fa-exclamation  fa-stack-2x"></i>
+        </span>
+              <p class="notfoundtxt"><b>404</b></p>
+              <p>not found</p>
+            </div>
+          </section>
+        </ng-template>
         </div>
-        <div class="text-center" *ngIf="!loaded">
-          <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        </div>
+        
+        <ng-template #loading>
+          <div class="text-center">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

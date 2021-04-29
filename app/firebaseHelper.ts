@@ -59,7 +59,20 @@ export class firebaseHelper {
       .get(getOptions);
   }
   getProjects() {
-    return this.db.collection("Projects").get(getOptions);
+    return new Promise((resolve, reject) => {
+      this.getPrivilages().then(priv => {
+        this.db
+          .collection("Projects")
+          .where("public", "==", priv == Privilages.Admin)
+          .get(getOptions)
+          .then(result => {
+            resolve(result);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    });
   }
   getPrivilages() {
     return new Promise((resolve, reject) => {
@@ -85,6 +98,7 @@ export class firebaseHelper {
   }
   uploadProject(title, subtitle, thumbnail, ytId, _Content: any[]) {
     //TODO every newline will be replaced by /n, put content into array,
+    if (_Content == null) _Content = new Array();
     _Content.forEach(item => {
       if (item.type != "image") {
         item.content.replaceAll("\\n", "\n");
@@ -108,7 +122,10 @@ export class firebaseHelper {
       .doc()
       .set({
         Title: title,
-        Thumbnail: "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png"
+        public: false,
+        Thumbnail:
+          "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
+        Content: new Array()
       });
   }
   updateProject(projcectId, title, subtitle, thumbnail, ytId, _Content: any[]) {
@@ -195,5 +212,5 @@ export enum SignInProvider {
 export enum Privilages {
   Guset,
   User,
-  Admin,
+  Admin
 }
