@@ -109,8 +109,13 @@ export class ProjectsViewComponent {
     this.firebaseHelper
       .createProject("New Project")
       .then(doc => {
-        console.log(doc);
         this.loaded = true;
+        //FIX inject it tho the doc or something...
+        this.add(
+          doc.id,
+          "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
+          "New Project"
+        );
       })
       .catch(err => {
         this.loaded = true;
