@@ -50,7 +50,6 @@ export class firebaseHelper {
     }
     this.db = firebase.firestore(this.app);
     firebase.auth().useDeviceLanguage();
-    console.log("FIREBASE INIT");
   }
   getAuth() {
     return firebase.auth();
@@ -68,10 +67,8 @@ export class firebaseHelper {
         var dbtmp: firebase.firestore.Query = this.db
           .collection("Projects")
           .where("publicView", "==", true);
-        console.log("GUSET or USER");
         if (priv == Privilages.Admin) {
           dbtmp = this.db.collection("Projects");
-          console.log("ADMIN");
         }
 
         dbtmp
