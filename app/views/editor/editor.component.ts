@@ -89,6 +89,9 @@ export class EditorViewComponent {
       }
     });
   }
+  setView(){
+    this.publicView = ! this.publicView;
+  }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {
       return item.name == typeName;

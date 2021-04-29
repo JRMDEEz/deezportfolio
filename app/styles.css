@@ -32,6 +32,9 @@ h5 {
 .dropdown {
   padding-bottom: 10px;
 }
+button p {
+  margin: auto;
+}
 .dropdown-menu > li > p {
   display: block;
   padding: 3px 20px;
