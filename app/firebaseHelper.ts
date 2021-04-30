@@ -4,7 +4,7 @@ import "firebase/firestore";
 import "firebase/auth";
 import { DocumentSnapshot } from "@angular/fire/firestore";
 import { forEach } from "@angular/router/src/utils/collection";
-import { setCookie, getCookie } from "./cookies";
+import { setCookie, getCookie, deleteCookie } from "./cookies";
 export const firebaseConfig = {
   apiKey: "AIzaSyCo_xoY3n6_zNkiDfamK04NadtJuOwF0ek",
   authDomain: "deez-portfolio.firebaseapp.com",
@@ -52,6 +52,9 @@ export class firebaseHelper {
     }
     this.db = firebase.firestore(this.app);
     firebase.auth().useDeviceLanguage();
+    this.getAuth().onAuthStateChanged(() => {
+      deleteCookie("updatedAt");
+    });
   }
 
   getAuth() {
@@ -228,20 +231,30 @@ export class firebaseHelper {
   }
   getDocumentsQuery(query: firebase.firestore.Query) {
     return new Promise((resolve, reject) => {
+      var cacheUpdatedAt = 0;
+      cacheUpdatedAt = parseInt(getCookie("updatedAt"));
       query
+        .where("updatedAt", ">", cacheUpdatedAt)
         .get()
-        .then(result => {
-          resolve(result);
+        .then(() => {
+          query
+            .get({ source: "cache" })
+            .then(result => {
+              resolve(result);
+              setCookie(
+                "updatedAt",
+                firebase.firestore.Timestamp.now()
+                  .toMillis()
+                  .toString()
+              );
+            })
+            .catch(err => {
+              reject(err);
+            });
         })
         .catch(err => {
           reject(err);
         });
-      setCookie(
-        "updatedAt",
-        firebase.firestore.Timestamp.now()
-          .toMillis()
-          .toString()
-      );
     });
   }
   getDocument(docref: firebase.firestore.DocumentReference) {
