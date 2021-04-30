@@ -59,10 +59,7 @@ export class firebaseHelper {
   }
   //FIX PRIVILAGES
   getProject(projectId: string) {
-    return this.db
-      .collection("Projects")
-      .doc(projectId)
-      .get();
+    return this.getDocument(this.db.collection("Projects").doc(projectId));
   }
   getProjects() {
     return new Promise((resolve, reject) => {
@@ -231,67 +228,31 @@ export class firebaseHelper {
   }
   getDocumentsQuery(query: firebase.firestore.Query) {
     return new Promise((resolve, reject) => {
-      var cacheUpdatedAt = 0;
-      var cookieUpdatedAt = getCookie("updatedAt");
-      if ((cookieUpdatedAt = undefined)) {
-        cacheUpdatedAt = parseInt(cookieUpdatedAt);
-        console.log("cache old");
-      }
-      //TODO i think its a little bit hackish
-      //it gets data from firebase that is not in the cache then requeries it on cache
       query
-        .where("updatedAt", ">", cacheUpdatedAt)
         .get()
         .then(result => {
-          result.forEach(item => {
-            console.log(
-              item.data().Title +
-                " Cache: " +
-                item.metadata.fromCache +
-                "| " +
-                item.data().updatedAt +
-                " > " +
-                cacheUpdatedAt +
-                "= " +
-                (item.data().updatedAt > cacheUpdatedAt)
-            );
-          });
-          query
-            .get({ source: "cache" })
-            .then(offresult => {
-              resolve(offresult);
-            })
-            .catch(err => {
-              reject(err);
-            });
-          setCookie(
-            "updatedAt",
-            firebase.firestore.Timestamp.now()
-              .toMillis()
-              .toString()
-          );
+          resolve(result);
         })
         .catch(err => {
           reject(err);
         });
+      setCookie(
+        "updatedAt",
+        firebase.firestore.Timestamp.now()
+          .toMillis()
+          .toString()
+      );
     });
   }
   getDocument(docref: firebase.firestore.DocumentReference) {
     return new Promise((resolve, reject) => {
       docref
-        .get({ source: "cache" })
+        .get()
         .then(result => {
           resolve(result);
         })
-        .catch(() => {
-          docref
-            .get()
-            .then(result => {
-              resolve(result);
-            })
-            .catch(err => {
-              reject(err);
-            });
+        .catch(err => {
+          reject(err);
         });
     });
   }
