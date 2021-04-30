@@ -4,6 +4,7 @@ import "firebase/firestore";
 import "firebase/auth";
 import { DocumentSnapshot } from "@angular/fire/firestore";
 import { forEach } from "@angular/router/src/utils/collection";
+import { setCookie, getCookie } from "./cookies";
 export const firebaseConfig = {
   apiKey: "AIzaSyCo_xoY3n6_zNkiDfamK04NadtJuOwF0ek",
   authDomain: "deez-portfolio.firebaseapp.com",
@@ -11,9 +12,6 @@ export const firebaseConfig = {
   storageBucket: "deez-portfolio.appspot.com",
   messagingSenderId: "187811856791",
   appId: "1:187811856791:web:2ef7ca054daf518dd584d2"
-};
-var getOptions = {
-  source: "cache"
 };
 
 export class firebaseHelper {
@@ -64,20 +62,19 @@ export class firebaseHelper {
     return this.db
       .collection("Projects")
       .doc(projectId)
-      .get(getOptions);
+      .get();
   }
   getProjects() {
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
+        this;
         var dbtmp: firebase.firestore.Query = this.db
           .collection("Projects")
           .where("publicView", "==", true);
         if (priv == Privilages.Admin) {
           dbtmp = this.db.collection("Projects");
         }
-
-        dbtmp
-          .get(getOptions)
+        this.getDocumentsQuery(dbtmp)
           .then(result => {
             resolve(result);
           })
@@ -93,36 +90,38 @@ export class firebaseHelper {
         if (user == null) {
           resolve(Privilages.Guset);
         } else {
-          this.db
-            .collection("Admins")
-            .doc(user.uid)
-            .get(getOptions)
-            .then(result => {
+          this.getDocument(this.db.collection("Admins").doc(user.uid)).then(
+            (result: firebase.firestore.DocumentSnapshot) => {
               if (result.exists) {
                 resolve(Privilages.Admin);
               }
               resolve(Privilages.User);
-            });
+            }
+          );
         }
       });
     });
   }
   searchProjcets(search) {
+    //TODO REFRACTOR!! code duplicate
     var Search = search.toLowerCase();
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
+        //TODO verry inneficient?? code duplicate
         var dbtmp: firebase.firestore.Query = this.db
           .collection("Projects")
-          .where("publicView", "==", true);
-        if (priv == Privilages.Admin) {
-          dbtmp = this.db.collection("Projects");
-        }
-
-        dbtmp
+          .where("publicView", "==", true)
           .orderBy("Searchterm")
           .startAt(Search)
-          .endAt(Search + "~")
-          .get(getOptions)
+          .endAt(Search + "~");
+        if (priv == Privilages.Admin) {
+          dbtmp = this.db
+            .collection("Projects")
+            .orderBy("Searchterm")
+            .startAt(Search)
+            .endAt(Search + "~");
+        }
+        this.getDocumentsQuery(dbtmp)
           .then(result => {
             resolve(result);
           })
@@ -138,6 +137,7 @@ export class firebaseHelper {
       Title: title,
       publicView: false,
       Searchterm: title.toLowerCase(),
+      updatedAt: firebase.firestore.Timestamp.now().toMillis(),
       Thumbnail:
         "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
       Content: new Array()
@@ -169,6 +169,7 @@ export class firebaseHelper {
         Title: title,
         Subtitle: subtitle,
         Thumbnail: thumbnail,
+        updatedAt: firebase.firestore.Timestamp.now().toMillis(),
         YTid: ytId,
         Searchterm: title.toLowerCase(),
         publicView: publicView,
@@ -225,6 +226,40 @@ export class firebaseHelper {
         })
         .catch(error => {
           reject(error);
+        });
+    });
+  }
+  getDocumentsQuery(query: firebase.firestore.Query) {
+    return new Promise((resolve, reject) => {
+      var cacheUpdatedAt = 0;
+      cacheUpdatedAt = parseInt(getCookie("cacheUpdatedAt"));
+      query
+        .where("updatedAt", ">", cacheUpdatedAt)
+        .get()
+        .then(result => {
+          resolve(result);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+  getDocument(docref: firebase.firestore.DocumentReference) {
+    return new Promise((resolve, reject) => {
+      docref
+        .get({ source: "cache" })
+        .then(result => {
+          resolve(result);
+        })
+        .catch(() => {
+          docref
+            .get()
+            .then(result => {
+              resolve(result);
+            })
+            .catch(err => {
+              reject(err);
+            });
         });
     });
   }
