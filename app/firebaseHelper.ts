@@ -232,12 +232,20 @@ export class firebaseHelper {
   getDocumentsQuery(query: firebase.firestore.Query) {
     return new Promise((resolve, reject) => {
       var cacheUpdatedAt = 0;
-      cacheUpdatedAt = parseInt(getCookie("cacheUpdatedAt"));
+      var cookieUpdatedAt = getCookie("cacheUpdatedAt");
+      if (cookieUpdatedAt != undefined)
+        cacheUpdatedAt = parseInt(cookieUpdatedAt);
       query
         .where("updatedAt", ">", cacheUpdatedAt)
         .get()
         .then(result => {
           resolve(result);
+          setCookie(
+            "updatedAt",
+            firebase.firestore.Timestamp.now()
+              .toMillis()
+              .toString()
+          );
         })
         .catch(err => {
           reject(err);
