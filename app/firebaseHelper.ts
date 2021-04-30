@@ -19,6 +19,7 @@ export class firebaseHelper {
   private app;
   static instance: firebaseHelper;
   initializing = true;
+  queryOnline = true;
   static getInstance() {
     if (!firebaseHelper.instance)
       firebaseHelper.instance = new firebaseHelper();
@@ -53,7 +54,7 @@ export class firebaseHelper {
     this.db = firebase.firestore(this.app);
     firebase.auth().useDeviceLanguage();
     this.getAuth().onAuthStateChanged(() => {
-      deleteCookie("updatedAt");
+      this.queryOnline = true;
     });
   }
 
@@ -231,26 +232,13 @@ export class firebaseHelper {
   }
   getDocumentsQuery(query: firebase.firestore.Query) {
     return new Promise((resolve, reject) => {
-      var cacheUpdatedAt = 0;
-      cacheUpdatedAt = parseInt(getCookie("updatedAt"));
-      query
-        .where("updatedAt", ">", cacheUpdatedAt)
-        .get()
-        .then(() => {
-          query
-            .get({ source: "cache" })
-            .then(result => {
-              resolve(result);
-              setCookie(
-                "updatedAt",
-                firebase.firestore.Timestamp.now()
-                  .toMillis()
-                  .toString()
-              );
-            })
-            .catch(err => {
-              reject(err);
-            });
+      //$hit optimization to save read count
+      var tmp = query.get();
+      if (!this.queryOnline) tmp = query.get({ source: "cache" });
+      tmp
+        .then(result => {
+          resolve(result);
+          this.queryOnline = false;
         })
         .catch(err => {
           reject(err);
