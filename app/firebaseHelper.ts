@@ -12,13 +12,15 @@ export const firebaseConfig = {
   messagingSenderId: "187811856791",
   appId: "1:187811856791:web:2ef7ca054daf518dd584d2"
 };
-var getOptions = {};
+var getOptions = {
+  source: "cache"
+};
 
 export class firebaseHelper {
   private db: firebase.firestore.Firestore;
   private app;
   static instance: firebaseHelper;
-
+  initializing = true;
   static getInstance() {
     if (!firebaseHelper.instance)
       firebaseHelper.instance = new firebaseHelper();
@@ -32,8 +34,10 @@ export class firebaseHelper {
         .enablePersistence()
         .then(() => {
           console.log("cache success!");
+          this.initializing = false;
         })
         .catch(err => {
+          this.initializing = false;
           console.log(err.code);
           if (err.code == "failed-precondition") {
             // Multiple tabs open, persistence can only be enabled
@@ -51,6 +55,7 @@ export class firebaseHelper {
     this.db = firebase.firestore(this.app);
     firebase.auth().useDeviceLanguage();
   }
+
   getAuth() {
     return firebase.auth();
   }
@@ -234,3 +239,4 @@ export enum Privilages {
   User,
   Admin
 }
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
