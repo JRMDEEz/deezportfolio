@@ -232,14 +232,38 @@ export class firebaseHelper {
   getDocumentsQuery(query: firebase.firestore.Query) {
     return new Promise((resolve, reject) => {
       var cacheUpdatedAt = 0;
-      var cookieUpdatedAt = getCookie("cacheUpdatedAt");
-      if (cookieUpdatedAt != undefined)
+      var cookieUpdatedAt = getCookie("updatedAt");
+      if ((cookieUpdatedAt = undefined)) {
         cacheUpdatedAt = parseInt(cookieUpdatedAt);
+        console.log("cache old");
+      }
+      //TODO i think its a little bit hackish
+      //it gets data from firebase that is not in the cache then requeries it on cache
       query
         .where("updatedAt", ">", cacheUpdatedAt)
         .get()
         .then(result => {
-          resolve(result);
+          result.forEach(item => {
+            console.log(
+              item.data().Title +
+                " Cache: " +
+                item.metadata.fromCache +
+                "| " +
+                item.data().updatedAt +
+                " > " +
+                cacheUpdatedAt +
+                "= " +
+                (item.data().updatedAt > cacheUpdatedAt)
+            );
+          });
+          query
+            .get({ source: "cache" })
+            .then(offresult => {
+              resolve(offresult);
+            })
+            .catch(err => {
+              reject(err);
+            });
           setCookie(
             "updatedAt",
             firebase.firestore.Timestamp.now()
