@@ -15,8 +15,8 @@ export class EditorViewComponent {
   loaded = false;
   videoUrl = "";
   YTid = "";
-  Title = "Inset title here";
-  Subtitle = "Insert text here";
+  Title = "";
+  Subtitle = "";
   Thumbnail = "";
   list = [];
   ID;
