@@ -18,7 +18,7 @@ export class firebaseHelper {
   private db: firebase.firestore.Firestore;
   private app;
   static instance: firebaseHelper;
-  initializing = true;
+  startup = true;
   static getInstance() {
     if (!firebaseHelper.instance)
       firebaseHelper.instance = new firebaseHelper();
@@ -32,10 +32,8 @@ export class firebaseHelper {
         .enablePersistence()
         .then(() => {
           console.log("cache success!");
-          this.initializing = false;
         })
         .catch(err => {
-          this.initializing = false;
           console.log(err.code);
           if (err.code == "failed-precondition") {
             // Multiple tabs open, persistence can only be enabled
@@ -119,7 +117,6 @@ export class firebaseHelper {
     });
   }
   searchProjcets(search) {
-    //TODO REFRACTOR!! code duplicate
     var Search = search.toLowerCase();
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
@@ -130,15 +127,22 @@ export class firebaseHelper {
           .startAt(Search)
           .endAt(Search + "~");
         if (priv != Privilages.Admin) {
-          query.where("publicView", "==", true);
+          this.getDocumentsQuery(query.where("publicView", "==", true), false)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(err => {
+              reject(err);
+            });
+        } else {
+          this.getDocumentsQuery(query, false)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(err => {
+              reject(err);
+            });
         }
-        this.getDocumentsQuery(query, false)
-          .then(result => {
-            resolve(result);
-          })
-          .catch(err => {
-            reject(err);
-          });
       });
     });
   }
@@ -242,7 +246,7 @@ export class firebaseHelper {
   }
   getDocumentsQuery(query: firebase.firestore.Query, smartCacheOn) {
     return new Promise((resolve, reject) => {
-      //$hit optimization to save read count
+      //sort of ok optimization to save read count
       if (smartCacheOn) query.where("updatedAt", ">", this.getUpdatedAt());
       query
         .get()
@@ -284,8 +288,14 @@ export class firebaseHelper {
   }
   getDocument(docref: firebase.firestore.DocumentReference, smartCacheOn) {
     return new Promise((resolve, reject) => {
+      //saves read count by allowing to only update document if its a direct link
+      var options = {};
+      if (!this.startup && smartCacheOn) {
+        options = { source: "cache" };
+        this.startup = false;
+      }
       docref
-        .get()
+        .get(options)
         .then(result => {
           resolve(result);
         })
