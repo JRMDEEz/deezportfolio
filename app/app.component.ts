@@ -89,11 +89,7 @@ export class AppComponent {
           this.ShowSearchbar = tmp;
         }
         if (this.ShowSearchbar) {
-          var search = this.route.snapshot.queryParams.Search;
-          if (search != undefined) {
-            this.searchbar = this.route.snapshot.queryParams.Search;
-            
-          }
+          this.searchbar = this.route.snapshot.queryParams.Search;
         }
       }
     });

@@ -64,23 +64,15 @@ export class firebaseHelper {
       true
     );
   }
-  counter = 0;
   getProjects() {
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
-        this;
-        var dbtmp: firebase.firestore.Query = this.db
-          .collection("Projects")
-          .where("publicView", "==", true);
         if (priv == Privilages.Admin) {
-          dbtmp = this.db.collection("Projects");
+          console.log("ADMIN");
           this.isPrivateDocsinCahce().then(isThere => {
-            //gets all documnets if theres no cache of private projeects
+            //gets all documents if theres no cache of private projects
             //it gets the updated private and public projeects at the same time but only once thuus saving read count
-            console.log("Cache: " + isThere);
-            this.counter++;
-            console.log("counter: " + this.counter);
-            this.getDocumentsQuery(dbtmp, isThere)
+            this.getDocumentsQuery(this.db.collection("Projects"), isThere)
               .then(result => {
                 resolve(result);
               })
@@ -89,7 +81,10 @@ export class firebaseHelper {
               });
           });
         } else {
-          this.getDocumentsQuery(dbtmp, true)
+          this.getDocumentsQuery(
+            this.db.collection("Projects").where("publicView", "==", true),
+            true
+          )
             .then(result => {
               resolve(result);
             })
@@ -124,27 +119,42 @@ export class firebaseHelper {
     var Search = search.toLowerCase();
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
-        //TODO verry inneficient?? code duplicate
-        var dbtmp: firebase.firestore.Query = this.db
-          .collection("Projects")
-          .where("publicView", "==", true)
-          .orderBy("Searchterm")
-          .startAt(Search)
-          .endAt(Search + "~");
         if (priv == Privilages.Admin) {
-          dbtmp = this.db
-            .collection("Projects")
-            .orderBy("Searchterm")
-            .startAt(Search)
-            .endAt(Search + "~");
-        }
-        this.getDocumentsQuery(dbtmp)
-          .then(result => {
-            resolve(result);
-          })
-          .catch(err => {
-            reject(err);
+          this.isPrivateDocsinCahce().then(isThere => {
+            //gets all documents if theres no cache of private projects
+            //it gets the updated private and public projeects at the same time but only once thuus saving read count
+            this.getDocumentsQuery(
+              this.db
+                .collection("Projects")
+                .orderBy("Searchterm")
+                .startAt(Search)
+                .endAt(Search + "~"),
+              isThere
+            )
+              .then(result => {
+                resolve(result);
+              })
+              .catch(err => {
+                reject(err);
+              });
           });
+        } else {
+          this.getDocumentsQuery(
+            this.db
+              .collection("Projects")
+              .where("publicView", "==", true)
+              .orderBy("Searchterm")
+              .startAt(Search)
+              .endAt(Search + "~"),
+            true
+          )
+            .then(result => {
+              resolve(result);
+            })
+            .catch(err => {
+              reject(err);
+            });
+        }
       });
     });
   }

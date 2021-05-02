@@ -29,7 +29,6 @@ import { Observable } from "rxjs";
 export class ProjectsViewComponent {
   public range = [];
   loaded = false;
-  Search;
   privilages;
   notfound = false;
   onSearchParamChangd;
@@ -39,23 +38,13 @@ export class ProjectsViewComponent {
   }
   ngOnDestroy() {
     this.onSearchParamChangd.unsubscribe();
-    console.log("unsubbing...");
   }
   ngOnInit() {
-    console.log("launcehd!");
-    var HTMLtmp = "";
-    var app;
-    var search = this.route.snapshot.queryParams.Search;
-    if (search == undefined) {
-      // Subsequent queries will use persistence, if it was enabled successfully
-      this.getprojects();
-    } else {
-      this.search(search);
-    }
-    this.onSearchParamChangd = this.route.queryParams.subscribe(val => {
-      if (val != undefined) {
-        console.log(search);
-        this.search(search);
+    this.onSearchParamChangd = this.route.queryParams.subscribe(search => {
+      if (search.Search == undefined) {
+        this.getprojects();
+      } else {
+        this.search(search.Search);
       }
     });
     this.firebaseHelper.getPrivilages().then(priv => {
