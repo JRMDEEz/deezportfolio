@@ -2,9 +2,9 @@ import { Component } from "@angular/core";
 import { Http } from "@angular/http";
 import { DomSanitizer } from "@angular/platform-browser";
 import { firebaseConfig } from "../../firebaseConfig";
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Params, Router } from "@angular/router";
 import { firebaseHelper } from "../../firebaseHelper";
-var getOptions = {};
+import { Observable } from "rxjs";
 @Component({
   selector: "projects",
   /*template: `
@@ -32,9 +32,17 @@ export class ProjectsViewComponent {
   Search;
   privilages;
   notfound = false;
+  onSearchParamChangd;
   private firebaseHelper: firebaseHelper = firebaseHelper.getInstance();
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router) {
+    console.log("launcehd!");
+  }
+  ngOnDestroy() {
+    this.onSearchParamChangd.unsubscribe();
+    console.log("unsubbing...");
+  }
   ngOnInit() {
+    console.log("launcehd!");
     var HTMLtmp = "";
     var app;
     var search = this.route.snapshot.queryParams.Search;
@@ -44,23 +52,10 @@ export class ProjectsViewComponent {
     } else {
       this.search(search);
     }
-    this.router.events.subscribe(val => {
-      if (val instanceof NavigationEnd) {
-        if (
-          val.url.toString().includes("/projects") &&
-          !(
-            val.url.toString().includes("/view") ||
-            val.url.toString().includes("/edit")
-          )
-        ) {
-          var search = this.route.snapshot.queryParams.Search;
-          if (search == undefined) {
-            this.getprojects();
-          } else {
-            console.log(search);
-            this.search(search);
-          }
-        }
+    this.onSearchParamChangd = this.route.queryParams.subscribe(val => {
+      if (val != undefined) {
+        console.log(search);
+        this.search(search);
       }
     });
     this.firebaseHelper.getPrivilages().then(priv => {
@@ -68,6 +63,7 @@ export class ProjectsViewComponent {
     });
   } //end Oninit
   getprojects() {
+    console.log("GETTING PROJECTS");
     this.loaded = false;
     this.firebaseHelper
       .getProjects()
@@ -77,12 +73,15 @@ export class ProjectsViewComponent {
           this.loaded = true;
           this.add(doc.id, doc.data().Thumbnail, doc.data().Title);
         });
+        return;
       })
       .catch(err => {
         this.loaded = true;
         this.notfound = true;
         console.log("Error getting documents: ", err);
+        return;
       });
+    return;
   }
   search(search) {
     this.loaded = false;

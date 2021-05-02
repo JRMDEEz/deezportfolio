@@ -92,6 +92,7 @@ export class AppComponent {
           var search = this.route.snapshot.queryParams.Search;
           if (search != undefined) {
             this.searchbar = this.route.snapshot.queryParams.Search;
+            
           }
         }
       }
@@ -142,6 +143,7 @@ export class AppComponent {
 
 /*FIX:Lazy -> idk wtf is happening, apparently i need 2 of these because if its outside the export class 
 it only updates on startup and if its inside it changes the icon when being toggled*/
+//solution put in onInit i think?
 if (isDarkMode) {
   themebtn = "fa-sun-o";
 } else {

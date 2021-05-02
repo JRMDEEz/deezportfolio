@@ -82,19 +82,19 @@ export class firebaseHelper {
             console.log("counter: " + this.counter);
             this.getDocumentsQuery(dbtmp, isThere)
               .then(result => {
-                return resolve(result);
+                resolve(result);
               })
               .catch(err => {
-                return reject(err);
+                reject(err);
               });
           });
         } else {
           this.getDocumentsQuery(dbtmp, true)
             .then(result => {
-              return resolve(result);
+              resolve(result);
             })
             .catch(err => {
-              return reject(err);
+              reject(err);
             });
         }
       });
@@ -104,16 +104,16 @@ export class firebaseHelper {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => {
         if (user == null) {
-          return resolve(Privilages.Guset);
+          resolve(Privilages.Guset);
         } else {
           this.getDocument(
             this.db.collection("Admins").doc(user.uid),
             true
           ).then((result: firebase.firestore.DocumentSnapshot) => {
             if (result.exists) {
-              return resolve(Privilages.Admin);
+              resolve(Privilages.Admin);
             }
-            return resolve(Privilages.User);
+            resolve(Privilages.User);
           });
         }
       });
@@ -140,10 +140,10 @@ export class firebaseHelper {
         }
         this.getDocumentsQuery(dbtmp)
           .then(result => {
-            return resolve(result);
+            resolve(result);
           })
           .catch(err => {
-            return reject(err);
+            reject(err);
           });
       });
     });
@@ -221,15 +221,15 @@ export class firebaseHelper {
             .auth()
             .signInWithPopup(provider)
             .then(result => {
-              return resolve(result);
+              resolve(result);
             })
             .catch(error => {
-              return reject(error);
+              reject(error);
             });
         })
         .catch(error => {
           // Handle Errors here.
-          return reject(error);
+          reject(error);
         });
     });
   }
@@ -239,10 +239,10 @@ export class firebaseHelper {
         .auth()
         .signOut()
         .then(result => {
-          return resolve(result);
+          resolve(result);
         })
         .catch(error => {
-          return reject(error);
+          reject(error);
         });
     });
   }
@@ -257,17 +257,17 @@ export class firebaseHelper {
             query
               .get({ source: "cache" })
               .then(offresult => {
-                return resolve(offresult);
+                resolve(offresult);
               })
               .catch(err => {
-                return reject(err);
+                reject(err);
               });
           } else {
-            return resolve(result);
+            resolve(result);
           }
         })
         .catch(err => {
-          return reject(err);
+          reject(err);
         });
     });
   }
@@ -281,10 +281,10 @@ export class firebaseHelper {
       docref
         .get()
         .then(result => {
-          return resolve(result);
+          resolve(result);
         })
         .catch(err => {
-          return reject(err);
+          reject(err);
         });
     });
   }
@@ -295,10 +295,10 @@ export class firebaseHelper {
         .where("publicView", "==", false)
         .get({ source: "cache" })
         .then(result => {
-          return resolve(!result.empty);
+          resolve(!result.empty);
         })
         .catch(err => {
-          return reject(err);
+          reject(err);
         });
     });
   }
