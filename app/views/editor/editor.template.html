@@ -17,10 +17,10 @@
         </div>
         <div class="col-xs-12 col-sm-4 col-md-5">
           <div class="headerText">
-            <h1 class="shadow-lg p-3 mb-5 bg-black rounded" spellcheck="false" placeholder="Insert text here"
-              (input)="Title=$event.target.innerText" contenteditable="true" [textContent]="Title"></h1>
+            <h1 class="shadow-lg p-3 mb-5 bg-black rounded" spellcheck="false" (input)="Title=$event.target.innerText"
+              contenteditable="true" [textContent]="Title"></h1>
             <h2 spellcheck="false" contenteditable="true" (input)="Subtitle=$event.target.innerText"
-              placeholder="Insert text here" [textContent]="Subtitle"></h2>
+              [textContent]="Subtitle"></h2>
           </div>
         </div>
         <div class="col-xs-12 scroll">
