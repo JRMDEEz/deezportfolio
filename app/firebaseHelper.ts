@@ -74,6 +74,7 @@ export class firebaseHelper {
             //it gets the updated private and public projeects at the same time but only once thuus saving read count
             this.getDocumentsQuery(query, isThere)
               .then(result => {
+                console.log(result.metadata.fromCache);
                 resolve(result);
               })
               .catch(err => {
@@ -83,6 +84,7 @@ export class firebaseHelper {
         } else {
           this.getDocumentsQuery(query.where("publicView", "==", true), true)
             .then(result => {
+              console.log(result.metadata.fromCache);
               resolve(result);
             })
             .catch(err => {
@@ -244,12 +246,14 @@ export class firebaseHelper {
               .get({ source: "cache" })
               .then(offresult => {
                 resolve(offresult);
+                this.setUpdatedAt();
               })
               .catch(err => {
                 reject(err);
               });
           } else {
             resolve(result);
+            this.setUpdatedAt();
           }
         })
         .catch(err => {
@@ -262,12 +266,19 @@ export class firebaseHelper {
     if (updatedAt == undefined) updatedAt = "0";
     return parseInt(updatedAt);
   }
+  setUpdatedAt() {
+    setCookie(
+      "updatedAt",
+      firebase.firestore.Timestamp.now()
+        .toMillis()
+        .toString()
+    );
+  }
   getDocument(docref: firebase.firestore.DocumentReference, smartCacheOn) {
     return new Promise((resolve, reject) => {
       docref
         .get()
         .then(result => {
-          console.log(result.metadata.fromCache);
           resolve(result);
         })
         .catch(err => {
