@@ -4,7 +4,6 @@ import { firebaseConfig } from "../../firebaseConfig";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firebaseHelper, Privilages } from "../../firebaseHelper";
-import { ModalUploadComponent } from "./modal-upload/modal.component";
 var getOptions = {};
 @Component({
   selector: "edit",
@@ -12,12 +11,6 @@ var getOptions = {};
   templateUrl: "/editor.template"
 })
 export class EditorViewComponent {
-  //TEMPO
-  public user = {
-    name: "Izzat Nadiri",
-    age: 26
-  };
-  //END
   notfound = false;
   loaded = false;
   videoUrl = "";
@@ -65,20 +58,6 @@ export class EditorViewComponent {
     private sanitizer: DomSanitizer,
     public modalService: NgbModal
   ) {}
-  //TEMPO
-  openModal() {
-    const modalRef = this.modalService.open(ModalUploadComponent);
-    modalRef.componentInstance.user = this.user;
-    modalRef.result.then(result => {
-      if (result) {
-        console.log(result);
-      }
-    });
-    // modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
-    //   console.log(receivedEntry);
-    // })
-  }
-  //END
   ngOnInit() {
     this.ID = this.route.snapshot.queryParams.id;
     this.firebaseHelper.getPrivilages().then(priv => {
