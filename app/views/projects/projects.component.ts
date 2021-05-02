@@ -33,9 +33,7 @@ export class ProjectsViewComponent {
   notfound = false;
   onSearchParamChangd;
   private firebaseHelper: firebaseHelper = firebaseHelper.getInstance();
-  constructor(private route: ActivatedRoute, private router: Router) {
-    console.log("launcehd!");
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
   ngOnDestroy() {
     this.onSearchParamChangd.unsubscribe();
   }
@@ -52,7 +50,6 @@ export class ProjectsViewComponent {
     });
   } //end Oninit
   getprojects() {
-    console.log("GETTING PROJECTS");
     this.loaded = false;
     this.firebaseHelper
       .getProjects()

@@ -67,12 +67,12 @@ export class firebaseHelper {
   getProjects() {
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
+        var query: firebase.firestore.Query = this.db.collection("Projects");
         if (priv == Privilages.Admin) {
-          console.log("ADMIN");
           this.isPrivateDocsinCahce().then(isThere => {
             //gets all documents if theres no cache of private projects
             //it gets the updated private and public projeects at the same time but only once thuus saving read count
-            this.getDocumentsQuery(this.db.collection("Projects"), isThere)
+            this.getDocumentsQuery(query, isThere)
               .then(result => {
                 resolve(result);
               })
@@ -81,10 +81,7 @@ export class firebaseHelper {
               });
           });
         } else {
-          this.getDocumentsQuery(
-            this.db.collection("Projects").where("publicView", "==", true),
-            true
-          )
+          this.getDocumentsQuery(query.where("publicView", "==", true), true)
             .then(result => {
               resolve(result);
             })
@@ -119,42 +116,21 @@ export class firebaseHelper {
     var Search = search.toLowerCase();
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
-        if (priv == Privilages.Admin) {
-          this.isPrivateDocsinCahce().then(isThere => {
-            //gets all documents if theres no cache of private projects
-            //it gets the updated private and public projeects at the same time but only once thuus saving read count
-            this.getDocumentsQuery(
-              this.db
-                .collection("Projects")
-                .orderBy("Searchterm")
-                .startAt(Search)
-                .endAt(Search + "~"),
-              isThere
-            )
-              .then(result => {
-                resolve(result);
-              })
-              .catch(err => {
-                reject(err);
-              });
-          });
-        } else {
-          this.getDocumentsQuery(
-            this.db
-              .collection("Projects")
-              .where("publicView", "==", true)
-              .orderBy("Searchterm")
-              .startAt(Search)
-              .endAt(Search + "~"),
-            true
-          )
-            .then(result => {
-              resolve(result);
-            })
-            .catch(err => {
-              reject(err);
-            });
+        var query: firebase.firestore.Query = this.db
+          .collection("Projects")
+          .orderBy("Searchterm")
+          .startAt(Search)
+          .endAt(Search + "~");
+        if (priv != Privilages.Admin) {
+          query.where("publicView", "==", true);
         }
+        this.getDocumentsQuery(query, false)
+          .then(result => {
+            resolve(result);
+          })
+          .catch(err => {
+            reject(err);
+          });
       });
     });
   }
@@ -291,6 +267,7 @@ export class firebaseHelper {
       docref
         .get()
         .then(result => {
+          console.log(result.metadata.fromCache);
           resolve(result);
         })
         .catch(err => {
