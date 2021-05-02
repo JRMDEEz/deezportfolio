@@ -55,8 +55,7 @@ export class EditorViewComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private sanitizer: DomSanitizer,
-    public modalService: NgbModal
+    private sanitizer: DomSanitizer
   ) {}
   ngOnInit() {
     this.ID = this.route.snapshot.queryParams.id;

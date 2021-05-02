@@ -34,6 +34,14 @@ UpdateUI();
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
+  show: boolean = false;
+  public deploymentName: any;
+  showModal() {
+    this.show = !this.show;
+  }
+  fnAddDeploytment() {
+    alert(this.deploymentName);
+  }
   //DEBUG FOR EditorViewComponent
   validTypes = [
     {
