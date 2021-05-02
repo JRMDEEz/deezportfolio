@@ -74,7 +74,7 @@ export class firebaseHelper {
             //it gets the updated private and public projeects at the same time but only once thuus saving read count
             this.getDocumentsQuery(query, isThere)
               .then(result => {
-                console.log(result.metadata.fromCache);
+                console.log("CACHE: " + result.metadata.fromCache);
                 resolve(result);
               })
               .catch(err => {
@@ -84,7 +84,7 @@ export class firebaseHelper {
         } else {
           this.getDocumentsQuery(query.where("publicView", "==", true), true)
             .then(result => {
-              console.log(result.metadata.fromCache);
+              console.log("CACHE: " + result.metadata.fromCache);
               resolve(result);
             })
             .catch(err => {
@@ -100,15 +100,20 @@ export class firebaseHelper {
         if (user == null) {
           resolve(Privilages.Guset);
         } else {
-          this.getDocument(
-            this.db.collection("Admins").doc(user.uid),
-            true
-          ).then((result: firebase.firestore.DocumentSnapshot) => {
-            if (result.exists) {
-              resolve(Privilages.Admin);
-            }
-            resolve(Privilages.User);
-          });
+          this.db
+            .collection("Admins")
+            .get({ source: "cache" })
+            .then(offresult => {
+              this.getDocument(
+                this.db.collection("Admins").doc(user.uid),
+                !offresult.empty
+              ).then((result: firebase.firestore.DocumentSnapshot) => {
+                if (result.exists) {
+                  resolve(Privilages.Admin);
+                }
+                resolve(Privilages.User);
+              });
+            });
         }
       });
     });
@@ -118,6 +123,7 @@ export class firebaseHelper {
     var Search = search.toLowerCase();
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
+        console.log("PRIVILAGE: " + priv);
         var query: firebase.firestore.Query = this.db
           .collection("Projects")
           .orderBy("Searchterm")
@@ -245,6 +251,7 @@ export class firebaseHelper {
             query
               .get({ source: "cache" })
               .then(offresult => {
+                console.log("SMART CACHE: " + offresult.metadata.fromCache);
                 resolve(offresult);
                 this.setUpdatedAt();
               })
@@ -252,6 +259,7 @@ export class firebaseHelper {
                 reject(err);
               });
           } else {
+            console.log("SMART CACHE OFF: " + result.metadata.fromCache);
             resolve(result);
             this.setUpdatedAt();
           }
