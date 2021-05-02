@@ -19,7 +19,6 @@ export class firebaseHelper {
   private app;
   static instance: firebaseHelper;
   initializing = true;
-  queryOnline = true;
   static getInstance() {
     if (!firebaseHelper.instance)
       firebaseHelper.instance = new firebaseHelper();
@@ -53,9 +52,6 @@ export class firebaseHelper {
     }
     this.db = firebase.firestore(this.app);
     firebase.auth().useDeviceLanguage();
-    this.getAuth().onAuthStateChanged(() => {
-      this.queryOnline = true;
-    });
   }
 
   getAuth() {
@@ -63,8 +59,12 @@ export class firebaseHelper {
   }
   //FIX PRIVILAGES
   getProject(projectId: string) {
-    return this.getDocument(this.db.collection("Projects").doc(projectId));
+    return this.getDocument(
+      this.db.collection("Projects").doc(projectId),
+      true
+    );
   }
+  counter = 0;
   getProjects() {
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
@@ -74,14 +74,29 @@ export class firebaseHelper {
           .where("publicView", "==", true);
         if (priv == Privilages.Admin) {
           dbtmp = this.db.collection("Projects");
-        }
-        this.getDocumentsQuery(dbtmp)
-          .then(result => {
-            resolve(result);
-          })
-          .catch(err => {
-            reject(err);
+          this.isPrivateDocsinCahce().then(isThere => {
+            //gets all documnets if theres no cache of private projeects
+            //it gets the updated private and public projeects at the same time but only once thuus saving read count
+            console.log("Cache: " + isThere);
+            this.counter++;
+            console.log("counter: " + this.counter);
+            this.getDocumentsQuery(dbtmp, isThere)
+              .then(result => {
+                return resolve(result);
+              })
+              .catch(err => {
+                return reject(err);
+              });
           });
+        } else {
+          this.getDocumentsQuery(dbtmp, true)
+            .then(result => {
+              return resolve(result);
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        }
       });
     });
   }
@@ -89,16 +104,17 @@ export class firebaseHelper {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => {
         if (user == null) {
-          resolve(Privilages.Guset);
+          return resolve(Privilages.Guset);
         } else {
-          this.getDocument(this.db.collection("Admins").doc(user.uid)).then(
-            (result: firebase.firestore.DocumentSnapshot) => {
-              if (result.exists) {
-                resolve(Privilages.Admin);
-              }
-              resolve(Privilages.User);
+          this.getDocument(
+            this.db.collection("Admins").doc(user.uid),
+            true
+          ).then((result: firebase.firestore.DocumentSnapshot) => {
+            if (result.exists) {
+              return resolve(Privilages.Admin);
             }
-          );
+            return resolve(Privilages.User);
+          });
         }
       });
     });
@@ -124,10 +140,10 @@ export class firebaseHelper {
         }
         this.getDocumentsQuery(dbtmp)
           .then(result => {
-            resolve(result);
+            return resolve(result);
           })
           .catch(err => {
-            reject(err);
+            return reject(err);
           });
       });
     });
@@ -205,15 +221,15 @@ export class firebaseHelper {
             .auth()
             .signInWithPopup(provider)
             .then(result => {
-              resolve(result);
+              return resolve(result);
             })
             .catch(error => {
-              reject(error);
+              return reject(error);
             });
         })
         .catch(error => {
           // Handle Errors here.
-          reject(error);
+          return reject(error);
         });
     });
   }
@@ -223,37 +239,66 @@ export class firebaseHelper {
         .auth()
         .signOut()
         .then(result => {
-          resolve(result);
+          return resolve(result);
         })
         .catch(error => {
-          reject(error);
+          return reject(error);
         });
     });
   }
-  getDocumentsQuery(query: firebase.firestore.Query) {
+  getDocumentsQuery(query: firebase.firestore.Query, smartCacheOn) {
     return new Promise((resolve, reject) => {
       //$hit optimization to save read count
-      var tmp = query.get();
-      if (!this.queryOnline) tmp = query.get({ source: "cache" });
-      tmp
+      if (smartCacheOn) query.where("updatedAt", ">", this.getUpdatedAt());
+      query
+        .get()
         .then(result => {
-          resolve(result);
-          this.queryOnline = false;
+          if (smartCacheOn) {
+            query
+              .get({ source: "cache" })
+              .then(offresult => {
+                return resolve(offresult);
+              })
+              .catch(err => {
+                return reject(err);
+              });
+          } else {
+            return resolve(result);
+          }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
-  getDocument(docref: firebase.firestore.DocumentReference) {
+  getUpdatedAt() {
+    var updatedAt = getCookie("updatedAt");
+    if (updatedAt == undefined) updatedAt = "0";
+    return parseInt(updatedAt);
+  }
+  getDocument(docref: firebase.firestore.DocumentReference, smartCacheOn) {
     return new Promise((resolve, reject) => {
       docref
         .get()
         .then(result => {
-          resolve(result);
+          return resolve(result);
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
+        });
+    });
+  }
+  isPrivateDocsinCahce() {
+    return new Promise((resolve, reject) => {
+      this.db
+        .collection("Projects")
+        .where("publicView", "==", false)
+        .get({ source: "cache" })
+        .then(result => {
+          return resolve(!result.empty);
+        })
+        .catch(err => {
+          return reject(err);
         });
     });
   }
@@ -268,4 +313,3 @@ export enum Privilages {
   User,
   Admin
 }
-const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
