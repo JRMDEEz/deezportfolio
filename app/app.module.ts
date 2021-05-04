@@ -5,11 +5,12 @@ import { HttpModule } from "@angular/http";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routing.module";
 import { APP_BASE_HREF } from "@angular/common";
-import { BsDropdownModule } from "ngx-bootstrap/dropdown";
+import { BsDropdownModule} from "ngx-bootstrap/dropdown";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [AppComponent],
   bootstrap: [AppComponent],
-  imports: [
+  imports: [NgbModule,
     AppRoutingModule,
     BrowserModule,
     FormsModule,

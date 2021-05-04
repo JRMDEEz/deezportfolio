@@ -11,6 +11,8 @@ import { ViewComponent } from "./views/view/view.component";
 import { AccountViewComponent } from "./views/account/account.component";
 import { EditorViewComponent } from "./views/editor/editor.component";
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
+
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 @NgModule({
   declarations: [
     ContactViewComponent,
@@ -24,6 +26,7 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
     EditorViewComponent
   ],
   imports: [
+    NgbModule,
     BrowserModule,
     BsDropdownModule.forRoot(),
     RouterModule.forRoot([

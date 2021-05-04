@@ -4,6 +4,8 @@ import { firebaseConfig } from "../../firebaseConfig";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firebaseHelper, Privilages } from "../../firebaseHelper";
+import { ModalContentComponent } from "./modal-upload/modal-upload.component";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 var getOptions = {};
 @Component({
   selector: "edit",
@@ -52,7 +54,26 @@ export class EditorViewComponent {
     }
   ];
   private firebaseHelper: firebaseHelper = firebaseHelper.getInstance();
+  //Test
+  public user = {
+    name: "Izzat Nadiri",
+    age: 26
+  };
+  openModal() {
+    const modalRef = this.modalService.open(ModalContentComponent);
+    modalRef.componentInstance.user = this.user;
+    modalRef.result.then(result => {
+      if (result) {
+        console.log(result);
+      }
+    });
+    // modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
+    //   console.log(receivedEntry);
+    // })
+  }
+  //END
   constructor(
+    public modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer
