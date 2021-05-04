@@ -399,7 +399,12 @@ h6 {
   padding-right: 15px;
   padding-left: 15px;
 }
-
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
 /* DARKMODE */
 .dark {
   background-color: rgb(36, 36, 36) !important;
@@ -414,4 +419,19 @@ h6 {
 }
 .dark .svg {
   filter: invert(100%);
+}
+.dark .modal-content {
+  background-color: rgb(71, 71, 71) !important;
+}
+.dark .close {
+  float: right;
+  color: #fff;
+  filter: alpha(opacity=20);
+  opacity: 0.7;
+}
+.dark .close:hover {
+  opacity: 1;
+}
+.dark .btn-secondary {
+  color: rgb(0, 0, 0);
 }
