@@ -5,6 +5,7 @@ import "firebase/auth";
 import { DocumentSnapshot } from "@angular/fire/firestore";
 import { forEach } from "@angular/router/src/utils/collection";
 import { setCookie, getCookie, deleteCookie } from "./cookies";
+import { v4 as uuidv4 } from "uuid";
 export const firebaseConfig = {
   apiKey: "AIzaSyCo_xoY3n6_zNkiDfamK04NadtJuOwF0ek",
   authDomain: "deez-portfolio.firebaseapp.com",
@@ -51,7 +52,11 @@ export class firebaseHelper {
     this.db = firebase.firestore(this.app);
     firebase.auth().useDeviceLanguage();
   }
-
+  uploadFile(projectId, FilePath) {
+    var fileName = uuidv4() + "." + this.getoutputExtension(FilePath);
+    var fbStoragePath = projectId + "/" + fileName;
+    // Upload file and metadata to the object 'images/mountains.jpg'
+  }
   getAuth() {
     return firebase.auth();
   }
@@ -317,6 +322,13 @@ export class firebaseHelper {
           reject(err);
         });
     });
+  }
+  getFile(filePath) {
+    return filePath.substr(filePath.lastIndexOf("\\") + 1).split(".")[0];
+  }
+
+  getoutputExtension(Filepath) {
+    return this.getFile(Filepath).split(".")[1];
   }
 }
 

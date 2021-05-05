@@ -39,8 +39,8 @@ export class AppComponent {
   showModal() {
     this.show = !this.show;
   }
-  fnAddDeploytment() {
-    alert(this.deploymentName);
+  fnAddDeploytment(log) {
+    console.log(log);
   }
   //DEBUG FOR EditorViewComponent
   validTypes = [

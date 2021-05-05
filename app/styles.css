@@ -20,7 +20,10 @@ h5 {
 .HTMLcontent img {
   width: 100%;
 }
-
+.modal-header {
+  padding: 15px;
+  border-bottom: none;
+}
 .btn-md {
   padding: 10px 16px;
   font-size: 15px;
@@ -432,6 +435,22 @@ h6 {
 .dark .close:hover {
   opacity: 1;
 }
+.dark .nav-tabs .nav-item.show .nav-link,
+.dark .nav-tabs .nav-link.active {
+  color: #fff;
+  background-color: rgb(71, 71, 71);
+  border-color: #dee2e6 #dee2e6 rgb(71, 71, 71);
+}
+.dark .nav > li > a {
+  color: #fff;
+}
+.dark .nav > li > a:hover {
+  color: rgb(0, 0, 0);
+}
 .dark .btn-secondary {
   color: rgb(0, 0, 0);
+}
+.progress-bar-animated {
+  -webkit-animation: progress-bar-stripes 1s linear infinite;
+  animation: progress-bar-stripes 1s linear infinite;
 }

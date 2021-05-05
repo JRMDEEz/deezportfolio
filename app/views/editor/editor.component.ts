@@ -21,7 +21,6 @@ export class EditorViewComponent {
   Thumbnail = "";
   list = [];
   ID;
-  uploadMode = true;
   publicView = true;
   validTypes = [
     {
