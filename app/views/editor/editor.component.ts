@@ -12,10 +12,6 @@ var getOptions = {};
   templateUrl: '/editor.template'
 })
 export class EditorViewComponent {
-  //DIALOG inneficient!!
-  URLMode = false;
-  importedFile;
-  importedURL;
   //END
   notfound = false;
   loaded = false;
@@ -102,10 +98,10 @@ export class EditorViewComponent {
   setView() {
     this.publicView = !this.publicView;
   }
-  UploadFile(URLMode) {
-    console.log(this.importedFile, this.importedURL, URLMode);
-    console.log('TYPE: ' + this.importedFile.name);
-    this.firebaseHelper.uploadFile(this.ID, this.importedFile);
+  UploadFile(FileInput,UrlInput,URLMode) {
+    console.log(FileInput, UrlInput, URLMode);
+    console.log('TYPE: ' + FileInput.name);
+    this.firebaseHelper.uploadFile(this.ID, FileInput);
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {
