@@ -59,7 +59,7 @@ export class EditorViewComponent {
     private router: Router,
     private sanitizer: DomSanitizer
   ) {}
-  test(file){
+  test(file) {
     console.log(file);
   }
   ngOnInit() {
@@ -98,10 +98,15 @@ export class EditorViewComponent {
   setView() {
     this.publicView = !this.publicView;
   }
-  UploadFile(FileInput,UrlInput,URLMode) {
-    console.log(FileInput, UrlInput, URLMode);
-    console.log('TYPE: ' + FileInput.name);
-    this.firebaseHelper.uploadFile(this.ID, FileInput);
+  FileInput;
+  onFileSelect(File) {
+    if (File != undefined) {
+      this.FileInput = File;
+      console.log(File);
+    }
+  }
+  UploadFile(UrlInput, URLMode) {
+    this.firebaseHelper.uploadFile(this.ID, this.FileInput);
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {
