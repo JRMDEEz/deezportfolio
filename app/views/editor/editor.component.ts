@@ -127,7 +127,6 @@ export class EditorViewComponent {
           }
         },
         error => {
-          
           // A full list of error codes is available at
           // https://firebase.google.com/docs/storage/web/handle-errors
           switch (error.code) {
@@ -146,7 +145,6 @@ export class EditorViewComponent {
           }
         },
         () => {
-          this.uploading = false;
           // Upload completed successfully, now we can get the download URL
           this.uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             this.Thumbnail = downloadURL;
@@ -155,7 +153,7 @@ export class EditorViewComponent {
       );
     }
   }
-  onImageLoad(){
+  onImageLoad() {
     this.uploading = false;
   }
   blankObject(typeName) {
