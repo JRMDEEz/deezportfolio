@@ -115,11 +115,15 @@
         <p *ngIf="ThumbnailView;else YTview">Thumbnail</p>
         <ng-template #YTview><p>Youtube</p></ng-template>
       </button>
+      <button type="button" class="btn btn-primary"(click)="uploadDialog = true">
+        <i class="fa fa-upload fa-fw clickable"></i>
+      </button>
+
       <div class="row align-items-center">
         <div class="col-xs-12 col-sm-8 col-md-7 text-center">
           <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 "></div>
           <div class="col-xs-10 col-sm-10 col-md-10 col-lg-8 clickable">
-            <i class="fa fa-upload fa-fw clickable" (click)="uploadDialog = true"></i>
+
             <div>
               <iframe class="video" *ngIf="videoUrl!='' && !ThumbnailView; else image" frameborder="0" allowfullscreen
                 [src]="videoUrl">
