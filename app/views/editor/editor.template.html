@@ -38,7 +38,7 @@
               <span class="input-group-addon"
                 ><label for="editOwnerName">URL</label></span>
               <input
-                #urlinput
+                [(ngModel)]="importedURL"
                 type="text"
                 class="form-control"
                 name="deploymentName"
@@ -46,7 +46,6 @@
                 placeholder=""
                 autofocus
                 autocomplete="off"
-                (input)="importedURL = $event.target.innerText"
               />
             </div>
           </div>
