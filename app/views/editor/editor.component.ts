@@ -97,8 +97,8 @@ export class EditorViewComponent {
   setView() {
     this.publicView = !this.publicView;
   }
-  uploading = true;
-  uploadPercent = '34.663771793483484%';
+  uploading = false;
+  uploadPercent = '0%';
   private uploadTask: firebase.storage.UploadTask;
   UploadFile(FileInput, UrlInput, URLMode) {
     if (URLMode) {
@@ -127,7 +127,7 @@ export class EditorViewComponent {
           }
         },
         error => {
-          this.uploading = false;
+          
           // A full list of error codes is available at
           // https://firebase.google.com/docs/storage/web/handle-errors
           switch (error.code) {
@@ -149,12 +149,14 @@ export class EditorViewComponent {
           this.uploading = false;
           // Upload completed successfully, now we can get the download URL
           this.uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            console.log('File available at', downloadURL);
             this.Thumbnail = downloadURL;
           });
         }
       );
     }
+  }
+  onImageLoad(){
+    this.uploading = false;
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {

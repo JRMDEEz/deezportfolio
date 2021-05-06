@@ -88,14 +88,20 @@
               <iframe class="video" *ngIf="videoUrl!=''; else image" frameborder="0" allowfullscreen [src]="videoUrl">
               </iframe>
               <ng-template #image>
-                <img class="maxwidth" [(src)]="Thumbnail" />
+                <img class="maxwidth" [(src)]="Thumbnail" (load)="onImageLoad()"/>
               </ng-template>
             </div>
             <div class="progress" *ngIf="uploading">
               <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped" role="progressbar"
                 [ngStyle]="{'width': uploadPercent}" aria-valuenow="uploadPercent" aria-valuemin="0"
                 aria-valuemax="100">
-                Uploading...
+                <p *ngIf="uploadPercent != '100%';else uploading">
+                  Uploading...
+                </p>
+                <ng-template #uploading>
+                  <p><b>
+                  Uploaded!</b> wait...</p>
+                </ng-template>
               </div>
             </div>
           </div>
