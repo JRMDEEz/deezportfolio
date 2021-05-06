@@ -99,13 +99,14 @@ export class EditorViewComponent {
     this.publicView = !this.publicView;
   }
   FileInput;
-  onFileSelect(File) {
+  onFileSelect(File :File) {
     if (File != undefined) {
       this.FileInput = File;
       console.log(File);
     }
   }
   UploadFile(UrlInput, URLMode) {
+    console.log(this.FileInput);
     this.firebaseHelper.uploadFile(this.ID, this.FileInput);
   }
   blankObject(typeName) {
