@@ -7,18 +7,15 @@ import { AppRoutingModule } from './app.routing.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalUploadComponent } from './views/modals/upload/upload.component';
-import { MaterialModule } from './material.module';
 @NgModule({
   declarations: [AppComponent, ModalUploadComponent],
   bootstrap: [AppComponent],
   imports: [
-    MaterialModule,
     AppRoutingModule,
     BrowserModule,
     FormsModule,
     HttpModule,
-    BsDropdownModule.forRoot(),
-    ModalUploadComponent
+    BsDropdownModule.forRoot()
   ],
   entryComponents: [ModalUploadComponent],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }]

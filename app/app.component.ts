@@ -1,6 +1,5 @@
 import { Component, enableProdMode } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
-import { MatDialog } from '@angular/material';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -9,7 +8,6 @@ import {
 } from '@angular/router';
 import { deleteCookie, getCookie, setCookie } from './cookies';
 import { firebaseHelper } from './firebaseHelper';
-import { ModalUploadComponent } from './views/modals/upload/upload.component';
 // Set the configuration for your app
 // TODO: Replace with your app's config object
 
@@ -80,13 +78,12 @@ export class AppComponent {
   Thumbnail =
     'https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/Cravelowres.png?alt=media&token=843bbfeb-1cc0-4132-b9af-a5c75ee46c6c';
   //END
-  private firebasehelper: firebaseHelper = firebaseHelper.getInstance();
+  private firebasehelper: firebaseHelper = new firebaseHelper();
   userprofile;
   constructor(
     private metaService: Meta,
     private router: Router,
-    private route: ActivatedRoute,
-    public dialog: MatDialog
+    private route: ActivatedRoute
   ) {
     router.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
@@ -145,16 +142,6 @@ export class AppComponent {
     };
     // Navigate to the login page with extras
     this.router.navigate(['/projects'], navigationExtras);
-  }
-  openModal(): void {
-    const dialogRef = this.dialog.open(ModalUploadComponent, {
-      width: '900px',
-      data: {}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed' + result);
-    });
   }
 }
 

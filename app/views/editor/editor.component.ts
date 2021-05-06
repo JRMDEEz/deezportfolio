@@ -1,54 +1,58 @@
-import { Component, NgModule } from "@angular/core";
-import { Http } from "@angular/http";
-import { firebaseConfig } from "../../firebaseConfig";
-import { DomSanitizer } from "@angular/platform-browser";
-import { ActivatedRoute, Router } from "@angular/router";
-import { firebaseHelper, Privilages } from "../../firebaseHelper";
-import { ModalContentComponent } from "./modal-upload/modal-upload.component";
+import { Component, NgModule } from '@angular/core';
+import { Http } from '@angular/http';
+import { firebaseConfig } from '../../firebaseConfig';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { firebaseHelper, Privilages } from '../../firebaseHelper';
+import { ModalContentComponent } from './modal-upload/modal-upload.component';
 var getOptions = {};
 @Component({
-  selector: "edit",
+  selector: 'edit',
   /*template: ``*/
-  templateUrl: "/editor.template"
+  templateUrl: '/editor.template'
 })
 export class EditorViewComponent {
+  //DIALOG inneficient!!
+  URLMode = false;
+  importedFile;
+  //END
   notfound = false;
   loaded = false;
-  videoUrl = "";
-  YTid = "";
-  Title = "";
-  Subtitle = "";
-  Thumbnail = "";
+  videoUrl = '';
+  YTid = '';
+  Title = '';
+  Subtitle = '';
+  Thumbnail = '';
   list = [];
   ID;
   publicView = true;
   validTypes = [
     {
-      name: "paragraph",
-      icon: "paragraph",
-      value: "Paragraph",
+      name: 'paragraph',
+      icon: 'paragraph',
+      value: 'Paragraph',
       blank: {
-        type: "paragraph",
-        content: "Type Here"
+        type: 'paragraph',
+        content: 'Type Here'
       }
     },
     {
-      name: "pre",
-      icon: "code",
-      value: "Code",
+      name: 'pre',
+      icon: 'code',
+      value: 'Code',
       blank: {
-        type: "pre",
-        content: "Code Here"
+        type: 'pre',
+        content: 'Code Here'
       }
     },
     {
-      name: "image",
-      icon: "picture-o",
-      value: "Image",
+      name: 'image',
+      icon: 'picture-o',
+      value: 'Image',
       blank: {
-        type: "image",
+        type: 'image',
         content:
-          "https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/img.png?alt=media&token=fd18f021-6877-4456-af34-e4e9587547d2"
+          'https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/img.png?alt=media&token=fd18f021-6877-4456-af34-e4e9587547d2'
       }
     }
   ];
@@ -62,7 +66,7 @@ export class EditorViewComponent {
     this.ID = this.route.snapshot.queryParams.id;
     this.firebaseHelper.getPrivilages().then(priv => {
       if (priv != Privilages.Admin) {
-        this.router.navigate(["/projects/view"], {
+        this.router.navigate(['/projects/view'], {
           queryParams: { id: this.ID }
         });
       } else {
@@ -72,7 +76,7 @@ export class EditorViewComponent {
             this.Title = doc.data().Title;
             this.publicView = doc.data().publicView;
             if (doc.data().Subtitle) this.Subtitle = doc.data().Subtitle;
-            if (doc.data().YTid != "" && doc.data().YTid != null) {
+            if (doc.data().YTid != '' && doc.data().YTid != null) {
               this.YTid = doc.data().YTid;
               this.updateVideoUrl(doc.data().YTid);
             }
@@ -85,15 +89,14 @@ export class EditorViewComponent {
           } else {
             this.loaded = true;
             this.notfound = true;
-            console.log("No such document!");
+            console.log('No such document!');
           }
         });
       }
     });
   }
   //imports image from the dialog
-  URLMode = false;
-  importedFile;
+
   importFile(file) {
     this.importFile = file;
     console.log(file);
@@ -101,8 +104,8 @@ export class EditorViewComponent {
   setView() {
     this.publicView = !this.publicView;
   }
-  UploadFile(URLInput, ImgInput, URLMode) {
-    console.log(URLInput, ImgInput, URLMode);
+  UploadFile(URLMode) {
+    console.log(this.importFile, URLMode);
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {
@@ -141,8 +144,8 @@ export class EditorViewComponent {
       )
       .then(() => {
         this.loaded = true;
-        console.log("PROJECT UPLOAD SUCCESSFULL");
-        this.router.navigate(["/projects/view"], {
+        console.log('PROJECT UPLOAD SUCCESSFULL');
+        this.router.navigate(['/projects/view'], {
           queryParams: { id: this.ID }
         });
       })
@@ -159,10 +162,10 @@ export class EditorViewComponent {
   }
   cleanContent(type: string, text: string) {
     var tmp = text;
-    if (type != "image") {
+    if (type != 'image') {
     }
     tmp = text.replaceAll(
-      "\\n",
+      '\\n',
       `
     `
     );
@@ -174,7 +177,7 @@ export class EditorViewComponent {
     // close as possible to the input data so
     // that it's easier to check if the value is safe.
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      "https://www.youtube.com/embed/" + id
+      'https://www.youtube.com/embed/' + id
     );
   }
   updateBackground(bkg: string);
@@ -182,6 +185,6 @@ export class EditorViewComponent {
     return this.sanitizer.bypassSecurityTrustHtml(str);
   }*/
   splitAtIndex(value, index) {
-    return value.substring(0, index) + "," + value.substring(index);
+    return value.substring(0, index) + ',' + value.substring(index);
   }
 }
