@@ -1,15 +1,6 @@
 <!-- Modal -->
-<div
-  class="modal"
-  let
-  uploadDialog
-  [class.show]="uploadDialog"
-  id="exampleModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal" let uploadDialog [class.show]="uploadDialog" id="exampleModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -22,24 +13,14 @@
       <!--TODO Fix Code! LAZY!! check feilds before submitting only in HTML-->
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a
-            class="nav-link clickable"
-            [ngClass]="{'active': URLMode === false}"
-            (click)="URLMode = false"
-            >Upload</a
-          >
+          <a class="nav-link clickable" [ngClass]="{'active': URLMode === false}" (click)="URLMode = false">Upload</a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link clickable"
-            [ngClass]="{'active': URLMode == true}"
-            (click)="URLMode = true"
-            >URL</a
-          >
+          <a class="nav-link clickable" [ngClass]="{'active': URLMode == true}" (click)="URLMode = true">URL</a>
         </li>
       </ul>
       <div class="modal-body">
-        <div class="form-group" *ngIf="URLMode == undefined; else uploadMode">
+        <div class="form-group" *ngIf="URLMode == false; else uploadMode">
           <div class="file-upload-wrapper">
             <input
               #imginput
@@ -55,8 +36,7 @@
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon"
-                ><label for="editOwnerName">URL</label></span
-              >
+                ><label for="editOwnerName">URL</label></span>
               <input
                 #urlinput
                 type="text"
@@ -105,32 +85,17 @@
       <div class="row align-items-center">
         <div class="col-xs-12 col-sm-8 col-md-7 text-center">
           <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 "></div>
-          <div
-            class="col-xs-10 col-sm-10 col-md-10 col-lg-8 clickable"
-            (click)="uploadDialog = true"
-          >
+          <div class="col-xs-10 col-sm-10 col-md-10 col-lg-8 clickable" (click)="uploadDialog = true">
             <div>
-              <iframe
-                class="video"
-                *ngIf="videoUrl!=''; else image"
-                frameborder="0"
-                allowfullscreen
-                [src]="videoUrl"
-              >
+              <iframe class="video" *ngIf="videoUrl!=''; else image" frameborder="0" allowfullscreen [src]="videoUrl">
               </iframe>
               <ng-template #image>
                 <img class="maxwidth" [(src)]="Thumbnail" />
               </ng-template>
             </div>
             <div class="progress">
-              <div
-                class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped"
-                role="progressbar"
-                style="width: 35%"
-                aria-valuenow="35"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
+              <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped" role="progressbar"
+                style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
                 Uploading...
               </div>
             </div>
@@ -139,19 +104,10 @@
         </div>
         <div class="col-xs-12 col-sm-4 col-md-5">
           <div class="headerText">
-            <h1
-              class="shadow-lg p-3 mb-5 bg-black rounded"
-              spellcheck="false"
-              (input)="Title=$event.target.innerText"
-              contenteditable="true"
-              [textContent]="Title"
-            ></h1>
-            <h2
-              spellcheck="false"
-              contenteditable="true"
-              (input)="Subtitle=$event.target.innerText"
-              [textContent]="Subtitle"
-            ></h2>
+            <h1 class="shadow-lg p-3 mb-5 bg-black rounded" spellcheck="false" (input)="Title=$event.target.innerText"
+              contenteditable="true" [textContent]="Title"></h1>
+            <h2 spellcheck="false" contenteditable="true" (input)="Subtitle=$event.target.innerText"
+              [textContent]="Subtitle"></h2>
           </div>
         </div>
         <div class="col-xs-12 scroll">
@@ -169,20 +125,11 @@
                 dropdownToggle
                 aria-controls="dropdown-basic"
               ></i>
-              <ul
-                id="dropdown-basic"
-                *dropdownMenu
-                class="dropdown-menu"
-                role="menu"
-                aria-labelledby="button-basic"
-              >
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
                 <li role="menuitem" *ngFor="let validtype of validTypes">
-                  <a
-                    class="dropdown-item clickable"
-                    (click)="appendNew(validtype.name)"
-                    ><i class="fa fa-{{validtype.icon}}"></i>
-                    {{validtype.value}}</a
-                  >
+                  <a class="dropdown-item clickable"
+                    (click)="appendNew(validtype.name)"><i class="fa fa-{{validtype.icon}}"></i>
+                    {{validtype.value}}</a>
                 </li>
               </ul>
             </div>
@@ -193,48 +140,31 @@
                   dropdownToggle
                   aria-controls="dropdown-basic"
                 ></i>
-                <ul
-                  id="dropdown-basic"
-                  class="dropdown-menu"
-                  role="menu"
-                  aria-labelledby="button-basic"
-                >
+                <ul id="dropdown-basic" class="dropdown-menu" role="menu" aria-labelledby="button-basic">
                   <li role="menuitem">
                     <p class="dropdown-item text-center">
                       <i class="fa fa-plus"></i> Add
                     </p>
                   </li>
                   <li role="menuitem" *ngFor="let validtype of validTypes">
-                    <a
-                      class="dropdown-item clickable"
-                      (click)="appendNext(i,validtype.name)"
-                      ><i class="fa fa-{{validtype.icon}}"></i>
-                      {{validtype.value}}</a
-                    >
+                    <a class="dropdown-item clickable"
+                      (click)="appendNext(i,validtype.name)"><i class="fa fa-{{validtype.icon}}"></i>
+                      {{validtype.value}}</a>
                   </li>
                   <li class="divider dropdown-divider"></li>
                   <li role="menuitem">
-                    <a class="dropdown-item" (click)="deleteItem(i)"
-                      ><i class="fa fa-trash"></i> Delete</a
-                    >
+                    <a class="dropdown-item" (click)="deleteItem(i)"><i class="fa fa-trash"></i> Delete</a>
                   </li>
                 </ul>
               </div>
               <div *ngIf="item.type == 'paragraph'">
-                <p
-                  contenteditable="true"
-                  (input)="item.content=$event.target.innerText"
-                  [textContent]="item.content"
-                ></p>
+                <p contenteditable="true" (input)="item.content=$event.target.innerText" [textContent]="item.content">
+                </p>
               </div>
 
               <div *ngIf="item.type=='pre'">
-                <pre
-                  spellcheck="false"
-                  contenteditable="true"
-                  (input)="item.content=$event.target.innerText"
-                  [textContent]="item.content"
-                ></pre>
+                <pre spellcheck="false" contenteditable="true" (input)="item.content=$event.target.innerText"
+                  [textContent]="item.content"></pre>
               </div>
 
               <div *ngIf="item.type == 'image'">
