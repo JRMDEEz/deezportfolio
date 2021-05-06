@@ -12,7 +12,6 @@ import { AccountViewComponent } from './views/account/account.component';
 import { EditorViewComponent } from './views/editor/editor.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalUploadComponent } from './views/modals/upload/upload.component';
-import { MaterialModule } from './material.module';
 @NgModule({
   declarations: [
     ContactViewComponent,
@@ -24,8 +23,7 @@ import { MaterialModule } from './material.module';
     ViewComponent,
     AccountViewComponent,
     EditorViewComponent,
-    ModalUploadComponent,
-    MaterialModule
+    ModalUploadComponent
   ],
   entryComponents: [ModalUploadComponent],
   imports: [
