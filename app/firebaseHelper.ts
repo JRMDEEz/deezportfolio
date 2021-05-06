@@ -1,6 +1,7 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/storage';
 import 'firebase/auth';
 import { DocumentSnapshot } from '@angular/fire/firestore';
 import { forEach } from '@angular/router/src/utils/collection';
@@ -53,17 +54,25 @@ export class firebaseHelper {
     this.db = firebase.firestore(this.app);
     firebase.auth().useDeviceLanguage();
   }
-  uploadFile(projectId, File: File) {
-    var fileName = uuidv4() + '.' + File.name.split('.').pop();
+  uploadFile(projectId, File: File): firebase.storage.UploadTask {
+    var fileName =
+      'Thumbnail.' +
+      File.name
+        .split('.')
+        .pop()
+        .toLowerCase();
+    console.log('UPLOAD ID: ' + fileName);
     var fbStoragePath = projectId + '/' + fileName;
     var storageRef = firebase
       .storage()
       .ref()
       .child(fbStoragePath);
     // Upload file and metadata to the object 'images/mountains.jpg'
-    storageRef.put(File).then(snapshot => {
-      console.log('Uploaded a blob or file!');
-    });
+    return storageRef.put(File);
+  }
+  downloadFilefromHTTPS(fbPath) {
+    var httpsReference = firebase.storage().refFromURL(fbPath);
+    return httpsReference.getDownloadURL();
   }
   getAuth() {
     return firebase.auth();

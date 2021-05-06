@@ -1,6 +1,8 @@
 import { Component, NgModule } from '@angular/core';
 import { Http } from '@angular/http';
 import { firebaseConfig } from '../../firebaseConfig';
+import firebase from 'firebase/app';
+import 'firebase/storage';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firebaseHelper, Privilages } from '../../firebaseHelper';
@@ -95,16 +97,64 @@ export class EditorViewComponent {
   setView() {
     this.publicView = !this.publicView;
   }
-  FileInput;
-  onFileSelect(File :File) {
-    if (File != undefined) {
-      this.FileInput = File;
-      console.log(File);
+  uploading = false;
+  uploadPercent = 0;
+  private uploadTask: firebase.storage.UploadTask;
+  UploadFile(FileInput, UrlInput, URLMode) {
+    if (URLMode) {
+      this.Thumbnail = UrlInput;
+      console.log(UrlInput);
+    } else {
+      console.log('FILE MODE');
+      this.uploading = true;
+      this.uploadTask = this.firebaseHelper.uploadFile(this.ID, FileInput);
+      // Listen for state changes, errors, and completion of the upload.
+      this.uploadTask.on(
+        firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        snapshot => {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.uploadPercent = progress;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        },
+        error => {
+          this.uploading = false;
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+
+            // ...
+
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        },
+        () => {
+          this.uploading = false;
+          // Upload completed successfully, now we can get the download URL
+          this.uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+            console.log('File available at', downloadURL);
+            this.Thumbnail = downloadURL;
+          });
+        }
+      );
     }
-  }
-  UploadFile(UrlInput, URLMode) {
-    console.log(this.FileInput);
-    this.firebaseHelper.uploadFile(this.ID, this.FileInput);
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {

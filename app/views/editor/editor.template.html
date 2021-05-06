@@ -13,7 +13,8 @@
       <!--TODO Fix Code! LAZY!! check feilds before submitting only in HTML-->
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link clickable" [ngClass]="{'active': URLMode === false}" (click)="URLMode = false">Upload</a>
+          <a class="nav-link clickable" [ngClass]="{'active': URLMode === undefined}"
+            (click)="URLMode = undefined">Upload</a>
         </li>
         <li class="nav-item">
           <a class="nav-link clickable" [ngClass]="{'active': URLMode == true}" (click)="URLMode = true">URL</a>
@@ -90,9 +91,10 @@
                 <img class="maxwidth" [(src)]="Thumbnail" />
               </ng-template>
             </div>
-            <div class="progress">
+            <div class="progress" *ngIf="uploading">
               <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped" role="progressbar"
-                style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
+                style="width:{{uploadPercent}}%" aria-valuenow="{{uploadPercent}}" aria-valuemin="0"
+                aria-valuemax="100">
                 Uploading...
               </div>
             </div>
