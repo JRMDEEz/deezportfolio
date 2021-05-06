@@ -59,9 +59,6 @@ export class EditorViewComponent {
     private router: Router,
     private sanitizer: DomSanitizer
   ) {}
-  test(file) {
-    console.log(file);
-  }
   ngOnInit() {
     this.ID = this.route.snapshot.queryParams.id;
     this.firebaseHelper.getPrivilages().then(priv => {
