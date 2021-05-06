@@ -27,9 +27,8 @@
                   style="width:100%"
                 />
                   <div class="w-100"></div>
-                  <p><strong>{{r.title}}</strong>
+                  <p><strong>{{r.title}}</strong><i *ngIf="r.publicView" class="fa fa-eye-slash"></i>
                   </p>
-                  <p *ngIf="r.publicView">(Private)</p>
                 </div>
               </div>
             </div>
