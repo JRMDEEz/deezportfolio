@@ -225,10 +225,11 @@ export class EditorViewComponent {
     );
     return tmp;
   }
-  publishVideoUrl(id:string){
-    if(id != undefined){
+  publishVideoUrl(id: string) {
+    console.log(id);
+    if (id != undefined) {
       this.updateVideoUrl(id);
-    }  
+    }
     this.YTid = id;
   }
   updateVideoUrl(id: string) {
@@ -236,7 +237,7 @@ export class EditorViewComponent {
     // Always make sure to construct SafeValue objects as
     // close as possible to the input data so
     // that it's easier to check if the value is safe.
-    
+
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       'https://www.youtube.com/embed/' + id
     );
