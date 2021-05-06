@@ -11,7 +11,7 @@ import { ViewComponent } from './views/view/view.component';
 import { AccountViewComponent } from './views/account/account.component';
 import { EditorViewComponent } from './views/editor/editor.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalUploadComponent } from './views/modals/upload/upload.component';
+
 @NgModule({
   declarations: [
     ContactViewComponent,
@@ -23,9 +23,9 @@ import { ModalUploadComponent } from './views/modals/upload/upload.component';
     ViewComponent,
     AccountViewComponent,
     EditorViewComponent,
-    ModalUploadComponent
+    
   ],
-  entryComponents: [ModalUploadComponent],
+  
   imports: [
     BrowserModule,
     BsDropdownModule.forRoot(),

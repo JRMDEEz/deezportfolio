@@ -1,18 +1,19 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
-import { DocumentSnapshot } from "@angular/fire/firestore";
-import { forEach } from "@angular/router/src/utils/collection";
-import { setCookie, getCookie, deleteCookie } from "./cookies";
-import { v4 as uuidv4 } from "uuid";
-export const firebaseConfig = {
-  apiKey: "AIzaSyCo_xoY3n6_zNkiDfamK04NadtJuOwF0ek",
-  authDomain: "deez-portfolio.firebaseapp.com",
-  projectId: "deez-portfolio",
-  storageBucket: "deez-portfolio.appspot.com",
-  messagingSenderId: "187811856791",
-  appId: "1:187811856791:web:2ef7ca054daf518dd584d2"
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+import { DocumentSnapshot } from '@angular/fire/firestore';
+import { forEach } from '@angular/router/src/utils/collection';
+import { setCookie, getCookie, deleteCookie } from './cookies';
+import { v4 as uuidv4 } from 'uuid';
+const firebaseConfig = {
+  apiKey: 'AIzaSyCo_xoY3n6_zNkiDfamK04NadtJuOwF0ek',
+  authDomain: 'deez-portfolio.firebaseapp.com',
+  projectId: 'deez-portfolio',
+  storageBucket: 'deez-portfolio.appspot.com',
+  messagingSenderId: '187811856791',
+  appId: '1:187811856791:web:2ef7ca054daf518dd584d2',
+  measurementId: 'G-8DDFK8VWEB'
 };
 
 export class firebaseHelper {
@@ -32,15 +33,15 @@ export class firebaseHelper {
         .firestore()
         .enablePersistence()
         .then(() => {
-          console.log("cache success!");
+          console.log('cache success!');
         })
         .catch(err => {
           console.log(err.code);
-          if (err.code == "failed-precondition") {
+          if (err.code == 'failed-precondition') {
             // Multiple tabs open, persistence can only be enabled
             // in one tab at a a time.
             // ...
-          } else if (err.code == "unimplemented") {
+          } else if (err.code == 'unimplemented') {
             // The current browser does not support all of the
             // features required to enable persistence
             // ...
@@ -53,8 +54,8 @@ export class firebaseHelper {
     firebase.auth().useDeviceLanguage();
   }
   uploadFile(projectId, FilePath) {
-    var fileName = uuidv4() + "." + this.getoutputExtension(FilePath);
-    var fbStoragePath = projectId + "/" + fileName;
+    var fileName = uuidv4() + '.' + this.getoutputExtension(FilePath);
+    var fbStoragePath = projectId + '/' + fileName;
     // Upload file and metadata to the object 'images/mountains.jpg'
   }
   getAuth() {
@@ -63,21 +64,21 @@ export class firebaseHelper {
   //FIX PRIVILAGES
   getProject(projectId: string) {
     return this.getDocument(
-      this.db.collection("Projects").doc(projectId),
+      this.db.collection('Projects').doc(projectId),
       true
     );
   }
   getProjects() {
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
-        var query: firebase.firestore.Query = this.db.collection("Projects");
+        var query: firebase.firestore.Query = this.db.collection('Projects');
         if (priv == Privilages.Admin) {
           this.isPrivateDocsinCahce().then(isThere => {
             //gets all documents if theres no cache of private projects
             //it gets the updated private and public projeects at the same time but only once thuus saving read count
             this.getDocumentsQuery(query, isThere)
               .then(result => {
-                console.log("CACHE: " + result.metadata.fromCache);
+                console.log('CACHE: ' + result.metadata.fromCache);
                 resolve(result);
               })
               .catch(err => {
@@ -85,9 +86,9 @@ export class firebaseHelper {
               });
           });
         } else {
-          this.getDocumentsQuery(query.where("publicView", "==", true), true)
+          this.getDocumentsQuery(query.where('publicView', '==', true), true)
             .then(result => {
-              console.log("CACHE: " + result.metadata.fromCache);
+              console.log('CACHE: ' + result.metadata.fromCache);
               resolve(result);
             })
             .catch(err => {
@@ -104,11 +105,11 @@ export class firebaseHelper {
           resolve(Privilages.Guset);
         } else {
           this.db
-            .collection("Admins")
-            .get({ source: "cache" })
+            .collection('Admins')
+            .get({ source: 'cache' })
             .then(offresult => {
               this.getDocument(
-                this.db.collection("Admins").doc(user.uid),
+                this.db.collection('Admins').doc(user.uid),
                 !offresult.empty
               ).then((result: firebase.firestore.DocumentSnapshot) => {
                 if (result.exists) {
@@ -125,14 +126,14 @@ export class firebaseHelper {
     var Search = search.toLowerCase();
     return new Promise((resolve, reject) => {
       this.getPrivilages().then(priv => {
-        console.log("PRIVILAGE: " + priv);
+        console.log('PRIVILAGE: ' + priv);
         var query: firebase.firestore.Query = this.db
-          .collection("Projects")
-          .orderBy("Searchterm")
+          .collection('Projects')
+          .orderBy('Searchterm')
           .startAt(Search)
-          .endAt(Search + "~");
+          .endAt(Search + '~');
         if (priv != Privilages.Admin) {
-          this.getDocumentsQuery(query.where("publicView", "==", true), false)
+          this.getDocumentsQuery(query.where('publicView', '==', true), false)
             .then(result => {
               resolve(result);
             })
@@ -153,13 +154,13 @@ export class firebaseHelper {
   }
   createProject(title) {
     //TODO every newline will be replaced by /n, put content into array,
-    return this.db.collection("Projects").add({
+    return this.db.collection('Projects').add({
       Title: title,
       publicView: false,
       Searchterm: title.toLowerCase(),
       updatedAt: firebase.firestore.Timestamp.now().toMillis(),
       Thumbnail:
-        "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
+        'https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png',
       Content: new Array()
     });
   }
@@ -174,16 +175,16 @@ export class firebaseHelper {
   ) {
     //TODO every newline will be replaced by /n, put content into array,
     _Content.forEach(item => {
-      if (item.type != "image") {
+      if (item.type != 'image') {
         item.content.replaceAll(
           `
       `,
-          "\n"
+          '\n'
         );
       }
     });
     return this.db
-      .collection("Projects")
+      .collection('Projects')
       .doc(projcectId)
       .set({
         Title: title,
@@ -252,15 +253,15 @@ export class firebaseHelper {
   getDocumentsQuery(query: firebase.firestore.Query, smartCacheOn) {
     return new Promise((resolve, reject) => {
       //sort of ok optimization to save read count
-      if (smartCacheOn) query.where("updatedAt", ">", this.getUpdatedAt());
+      if (smartCacheOn) query.where('updatedAt', '>', this.getUpdatedAt());
       query
         .get()
         .then(result => {
           if (smartCacheOn) {
             query
-              .get({ source: "cache" })
+              .get({ source: 'cache' })
               .then(offresult => {
-                console.log("SMART CACHE: " + offresult.metadata.fromCache);
+                console.log('SMART CACHE: ' + offresult.metadata.fromCache);
                 resolve(offresult);
                 this.setUpdatedAt();
               })
@@ -268,7 +269,7 @@ export class firebaseHelper {
                 reject(err);
               });
           } else {
-            console.log("SMART CACHE OFF: " + result.metadata.fromCache);
+            console.log('SMART CACHE OFF: ' + result.metadata.fromCache);
             resolve(result);
             this.setUpdatedAt();
           }
@@ -279,13 +280,13 @@ export class firebaseHelper {
     });
   }
   getUpdatedAt() {
-    var updatedAt = getCookie("updatedAt");
-    if (updatedAt == undefined) updatedAt = "0";
+    var updatedAt = getCookie('updatedAt');
+    if (updatedAt == undefined) updatedAt = '0';
     return parseInt(updatedAt);
   }
   setUpdatedAt() {
     setCookie(
-      "updatedAt",
+      'updatedAt',
       firebase.firestore.Timestamp.now()
         .toMillis()
         .toString()
@@ -296,7 +297,7 @@ export class firebaseHelper {
       //saves read count by allowing to only update document if its a direct link
       var options = {};
       if (!this.startup && smartCacheOn) {
-        options = { source: "cache" };
+        options = { source: 'cache' };
         this.startup = false;
       }
       docref
@@ -312,9 +313,9 @@ export class firebaseHelper {
   isPrivateDocsinCahce() {
     return new Promise((resolve, reject) => {
       this.db
-        .collection("Projects")
-        .where("publicView", "==", false)
-        .get({ source: "cache" })
+        .collection('Projects')
+        .where('publicView', '==', false)
+        .get({ source: 'cache' })
         .then(result => {
           resolve(!result.empty);
         })
@@ -324,11 +325,11 @@ export class firebaseHelper {
     });
   }
   getFile(filePath) {
-    return filePath.substr(filePath.lastIndexOf("\\") + 1).split(".")[0];
+    return filePath.substr(filePath.lastIndexOf('\\') + 1).split('.')[0];
   }
 
   getoutputExtension(Filepath) {
-    return this.getFile(Filepath).split(".")[1];
+    return this.getFile(Filepath).split('.')[1];
   }
 }
 

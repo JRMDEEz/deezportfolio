@@ -1,27 +1,29 @@
-import { Component, enableProdMode } from "@angular/core";
-import { Meta } from "@angular/platform-browser";
+import { Component, enableProdMode } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material';
 import {
   ActivatedRoute,
   NavigationEnd,
   NavigationExtras,
   Router
-} from "@angular/router";
-import { deleteCookie, getCookie, setCookie } from "./cookies";
-import { firebaseHelper } from "./firebaseHelper";
+} from '@angular/router';
+import { deleteCookie, getCookie, setCookie } from './cookies';
+import { firebaseHelper } from './firebaseHelper';
+import { ModalUploadComponent } from './views/modals/upload/upload.component';
 // Set the configuration for your app
 // TODO: Replace with your app's config object
 
 var themebtn;
 var isDarkMode;
-if (getCookie("isDarkMode") == undefined) {
-  isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+if (getCookie('isDarkMode') == undefined) {
+  isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 } else {
-  isDarkMode = getCookie("isDarkMode") == "true";
+  isDarkMode = getCookie('isDarkMode') == 'true';
 }
 
 UpdateUI();
 @Component({
-  selector: "my-app",
+  selector: 'my-app',
   //templateUrl: "./views/knowledge/knowledge.template",
   //templateUrl: "./views/projects/projects.template",
   //templateUrl: "./views/home/home.template",
@@ -30,8 +32,8 @@ UpdateUI();
   //templateUrl: "./views/tempo.template",
   //templateUrl: "./views/login/login.template",
   //templateUrl: "./views/editor/editor.template",
-  templateUrl: "./app.template",
-  styleUrls: ["./app.component.css"]
+  templateUrl: './app.template',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   show: boolean = false;
@@ -45,53 +47,54 @@ export class AppComponent {
   //DEBUG FOR EditorViewComponent
   validTypes = [
     {
-      type: "title",
-      icon: "paragraph",
-      value: "Title",
+      type: 'title',
+      icon: 'paragraph',
+      value: 'Title',
       blank: {
-        content: ""
+        content: ''
       }
     },
     {
-      type: "reeee",
-      icon: "paragraph",
-      value: "Title",
+      type: 'reeee',
+      icon: 'paragraph',
+      value: 'Title',
       blank: {
-        content: ""
+        content: ''
       }
     }
   ];
   loaded = true;
   notfound = false;
-  videoUrl = "";
-  Title = "Crave";
-  Subtitle = "food delivery app!";
+  videoUrl = '';
+  Title = 'Crave';
+  Subtitle = 'food delivery app!';
   list = [
-    { type: "paragraph", content: "asdasdasdreeeeee" },
+    { type: 'paragraph', content: 'asdasdasdreeeeee' },
     {
-      type: "pre",
+      type: 'pre',
       content: `public void reee(){
       asd();
     }`
     }
   ];
   Thumbnail =
-    "https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/Cravelowres.png?alt=media&token=843bbfeb-1cc0-4132-b9af-a5c75ee46c6c";
+    'https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/Cravelowres.png?alt=media&token=843bbfeb-1cc0-4132-b9af-a5c75ee46c6c';
   //END
   private firebasehelper: firebaseHelper = firebaseHelper.getInstance();
   userprofile;
   constructor(
     private metaService: Meta,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public dialog: MatDialog
   ) {
     router.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
         var tmp: boolean =
-          val.url.toString().includes("/projects") &&
+          val.url.toString().includes('/projects') &&
           !(
-            val.url.toString().includes("/view") ||
-            val.url.toString().includes("/edit")
+            val.url.toString().includes('/view') ||
+            val.url.toString().includes('/edit')
           );
         if (this.ShowSearchbar != tmp) {
           this.ShowSearchbar = tmp;
@@ -104,8 +107,8 @@ export class AppComponent {
   }
   searchbar;
   ShowSearchbar = false;
-  Date = "1";
-  Timeperiod = "month";
+  Date = '1';
+  Timeperiod = 'month';
   themebtn = themebtn;
   ngOnInit() {
     this.firebasehelper.getAuth().onAuthStateChanged(user => {
@@ -113,16 +116,16 @@ export class AppComponent {
         this.userprofile = user.photoURL;
       } else {
         this.userprofile =
-          "https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/default-user.png?alt=media&token=dca65cb1-3d4f-48ff-8194-a6db81b5585f";
+          'https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/default-user.png?alt=media&token=dca65cb1-3d4f-48ff-8194-a6db81b5585f';
       }
     });
   }
   myScript() {
     isDarkMode = !isDarkMode;
     if (isDarkMode) {
-      this.themebtn = "fa-sun-o";
+      this.themebtn = 'fa-sun-o';
     } else {
-      this.themebtn = "fa-moon-o";
+      this.themebtn = 'fa-moon-o';
     }
     UpdateUI();
   }
@@ -130,10 +133,10 @@ export class AppComponent {
   public setCanScale(): void {
     this.metaService.updateTag(
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1.0, user-scalable=yes"
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1.0, user-scalable=yes'
       },
-      "name=viewport"
+      'name=viewport'
     );
   }
   search() {
@@ -141,7 +144,17 @@ export class AppComponent {
       queryParams: { Search: this.searchbar }
     };
     // Navigate to the login page with extras
-    this.router.navigate(["/projects"], navigationExtras);
+    this.router.navigate(['/projects'], navigationExtras);
+  }
+  openModal(): void {
+    const dialogRef = this.dialog.open(ModalUploadComponent, {
+      width: '900px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed' + result);
+    });
   }
 }
 
@@ -149,15 +162,15 @@ export class AppComponent {
 it only updates on startup and if its inside it changes the icon when being toggled*/
 //solution put in onInit i think?
 if (isDarkMode) {
-  themebtn = "fa-sun-o";
+  themebtn = 'fa-sun-o';
 } else {
-  themebtn = "fa-moon-o";
+  themebtn = 'fa-moon-o';
 }
 function UpdateUI() {
   if (isDarkMode) {
-    document.body.className = "dark";
+    document.body.className = 'dark';
   } else {
-    document.body.className = "light";
+    document.body.className = 'light';
   }
-  setCookie("isDarkMode", String(isDarkMode));
+  setCookie('isDarkMode', String(isDarkMode));
 }
