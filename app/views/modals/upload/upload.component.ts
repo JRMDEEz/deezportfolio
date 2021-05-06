@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ModalHelperService } from '../../../modal-helper.service';
-
 const ELEMENT_DATA = [
   {
     name: 'Apple',
@@ -53,14 +51,4 @@ export class ModalUploadComponent {
     'CEO',
     'Industry'
   ];
-
-  constructor(public modalHelperService: ModalHelperService) {}
-
-  save = () => this.modalHelperService.save();
-  filter = () => this.modalHelperService.filter();
-  sort = () => this.modalHelperService.sort();
-  masterToggle = (selection, dataSource) =>
-    this.modalHelperService.masterToggle(selection, dataSource);
-  isAllSelected = (selection, dataSource) =>
-    this.modalHelperService.isAllSelected(selection, dataSource);
 }
