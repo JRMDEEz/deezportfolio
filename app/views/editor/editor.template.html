@@ -90,15 +90,13 @@
         >
           Save changes
         </button>
-        <ng-template>
-          <button
+        <button *ngIf="!ThumbnailView"
           type="button"
           class="btn btn-primary"
           (click)="updateVideoUrl(YTIDInput);uploadDialog = false"
         >
           Publish
         </button>
-        </ng-template>
       </div>
     </div>
   </div>
