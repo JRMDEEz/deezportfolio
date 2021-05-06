@@ -29,8 +29,8 @@ UpdateUI();
   //templateUrl: "./views/view/view.template",
   //templateUrl: "./views/tempo.template",
   //templateUrl: "./views/login/login.template",
-  templateUrl: "./views/editor/editor.template",
-  //templateUrl: "./app.template",
+  //templateUrl: "./views/editor/editor.template",
+  templateUrl: "./app.template",
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {

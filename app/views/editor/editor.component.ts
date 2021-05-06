@@ -91,8 +91,18 @@ export class EditorViewComponent {
       }
     });
   }
+  //imports image from the dialog
+  URLMode = false;
+  importedFile;
+  importFile(file) {
+    this.importFile = file;
+    console.log(file);
+  }
   setView() {
     this.publicView = !this.publicView;
+  }
+  UploadFile(URLInput, ImgInput, URLMode) {
+    console.log(URLInput, ImgInput, URLMode);
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {
