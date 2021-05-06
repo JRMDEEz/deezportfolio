@@ -97,8 +97,8 @@ export class EditorViewComponent {
   setView() {
     this.publicView = !this.publicView;
   }
-  uploading = false;
-  uploadPercent = '0%';
+  uploading = true;
+  uploadPercent = '34.663771793483484%';
   private uploadTask: firebase.storage.UploadTask;
   UploadFile(FileInput, UrlInput, URLMode) {
     if (URLMode) {
