@@ -22,7 +22,7 @@
       <div class="modal-body">
         <div class="form-group" *ngIf="URLMode == false; else uploadMode">
           <div class="file-upload-wrapper">
-            <input (change)="test(event.target.files)"
+            <input (change)="test($event.target.files)"
               type="file"
               id="input-file-now"
               class="file-upload maxwidth"
