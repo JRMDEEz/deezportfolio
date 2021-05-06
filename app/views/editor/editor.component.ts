@@ -16,6 +16,7 @@ var getOptions = {};
 export class EditorViewComponent {
   //END
   notfound = false;
+  ThumbnailView = true;
   loaded = false;
   videoUrl = '';
   YTid = '';
@@ -76,8 +77,8 @@ export class EditorViewComponent {
             this.publicView = doc.data().publicView;
             if (doc.data().Subtitle) this.Subtitle = doc.data().Subtitle;
             if (doc.data().YTid != '' && doc.data().YTid != null) {
-              this.YTid = doc.data().YTid;
               this.updateVideoUrl(doc.data().YTid);
+              this.ThumbnailView = false;
             }
             this.Thumbnail = doc.data().Thumbnail;
             var contentlist = doc.data().Content;
@@ -204,6 +205,9 @@ export class EditorViewComponent {
         console.log(error);
       });
   }
+  setThumbView() {
+    this.ThumbnailView != this.ThumbnailView;
+  }
   deleteItem(index) {
     if (index > -1) {
       this.list.splice(index, 1);
@@ -225,6 +229,7 @@ export class EditorViewComponent {
     // Always make sure to construct SafeValue objects as
     // close as possible to the input data so
     // that it's easier to check if the value is safe.
+    this.YTid = id;
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       'https://www.youtube.com/embed/' + id
     );

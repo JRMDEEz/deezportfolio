@@ -11,7 +11,8 @@
       </div>
       <!--TODO diry code please fix future me : URLMode === undefined !-->
       <!--TODO Fix Code! LAZY!! check feilds before submitting only in HTML-->
-      <ul class="nav nav-tabs">
+      <!-- shit code please fix!!-->
+      <ul class="nav nav-tabs" *ngIf="ThumbnailView">
         <li class="nav-item">
           <a class="nav-link clickable" [ngClass]="{'active': URLMode == undefined}"
             (click)="URLMode = undefined">Upload</a>
@@ -21,24 +22,44 @@
         </li>
       </ul>
       <div class="modal-body">
-        <div class="form-group" *ngIf="URLMode == undefined; else uploadMode">
-          <div class="file-upload-wrapper">
-            <input
+        <div *ngIf="ThumbnailView; else YTView">
+          <div class="form-group" *ngIf="URLMode == undefined; else uploadMode">
+            <div class="file-upload-wrapper">
+              <input
               (change)="FileInput = $event.target.files[0]"
               type="file"
               id="input-file-now"
               class="file-upload maxwidth"
               accept="image/*"
             />
+            </div>
           </div>
+          <ng-template #uploadMode>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"
+                ><label for="editOwnerName">URL</label></span>
+                <input
+                [(ngModel)]="UrlInput"
+                type="text"
+                class="form-control"
+                name="deploymentName"
+                id="deploymentName"
+                placeholder=""
+                autofocus
+                autocomplete="off"
+              />
+              </div>
+            </div>
+          </ng-template>
         </div>
-        <ng-template #uploadMode>
+        <ng-template #YTView>
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon"
-                ><label for="editOwnerName">URL</label></span>
+                ><label for="editOwnerName">Youtube ID</label></span>
               <input
-                [(ngModel)]="UrlInput"
+                [(ngModel)]="YTIDInput"
                 type="text"
                 class="form-control"
                 name="deploymentName"
@@ -60,13 +81,23 @@
         >
           Close
         </button>
-        <button
+        <!-- shit code please fix!!-->
+        <button *ngIf="ThumbnailView"
           type="button"
           class="btn btn-primary"
           (click)="UploadFile(FileInput,UrlInput,URLMode);uploadDialog = false"
         >
           Save changes
         </button>
+        <ng-template>
+          <button *ngIf="ThumbnailView"
+          type="button"
+          class="btn btn-primary"
+          (click)="updateVideoUrl(YTIDInput);uploadDialog = false"
+        >
+          Publish
+        </button>
+        </ng-template>
       </div>
     </div>
   </div>
@@ -80,6 +111,10 @@
       <button type="button" class="btn btn-primary" (click)="setView()">
         <p *ngIf="publicView;else private">Public</p>
         <ng-template #private><p>Private</p></ng-template>
+      </button>
+      <button type="button" class="btn btn-primary" (click)="setThumbView()">
+        <p *ngIf="ThumbnailView;else YTview">Thumbnail</p>
+        <ng-template #YTview><p>Youtube</p></ng-template>
       </button>
       <div class="row align-items-center">
         <div class="col-xs-12 col-sm-8 col-md-7 text-center">
@@ -100,9 +135,9 @@
               <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped" role="progressbar"
                 [ngStyle]="{'width': uploadPercent}" aria-valuenow="uploadPercent" aria-valuemin="0"
                 aria-valuemax="100">
-                <div *ngIf="uploadPercent != '100%';else uploading">
+                <ng-template *ngIf="uploadPercent != '100%';else uploading">
                   Uploading...
-                </div>
+                </ng-template>
                 <ng-template #uploading>
                   Uploaded! wait...
                 </ng-template>
