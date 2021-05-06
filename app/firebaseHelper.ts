@@ -53,10 +53,17 @@ export class firebaseHelper {
     this.db = firebase.firestore(this.app);
     firebase.auth().useDeviceLanguage();
   }
-  uploadFile(projectId, FilePath) {
-    var fileName = uuidv4() + '.' + this.getoutputExtension(FilePath);
+  uploadFile(projectId, File: File) {
+    var fileName = uuidv4() + '.' + File.name.split('.').pop();
     var fbStoragePath = projectId + '/' + fileName;
+    var storageRef = firebase
+      .storage()
+      .ref()
+      .child(fbStoragePath);
     // Upload file and metadata to the object 'images/mountains.jpg'
+    storageRef.put(File).then(snapshot => {
+      console.log('Uploaded a blob or file!');
+    });
   }
   getAuth() {
     return firebase.auth();
@@ -329,7 +336,7 @@ export class firebaseHelper {
   }
 
   getoutputExtension(Filepath) {
-    return this.getFile(Filepath).split('.')[1];
+    return Filepath.split('.')[1];
   }
 }
 

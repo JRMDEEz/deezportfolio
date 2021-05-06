@@ -101,6 +101,7 @@ export class EditorViewComponent {
   }
   UploadFile(URLMode) {
     console.log(this.importedFile, this.importedURL, URLMode);
+    this.firebaseHelper.uploadFile(this.ID, this.importedFile);
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {
