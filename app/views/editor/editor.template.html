@@ -120,7 +120,8 @@
           <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 "></div>
           <div class="col-xs-10 col-sm-10 col-md-10 col-lg-8 clickable" (click)="uploadDialog = true">
             <div>
-              <iframe class="video" *ngIf="videoUrl!=''; else image" frameborder="0" allowfullscreen [src]="videoUrl">
+              <iframe class="video" *ngIf="videoUrl!='' && !ThumbnailView; else image" frameborder="0" allowfullscreen
+                [src]="videoUrl">
               </iframe>
               <ng-template #image>
                 <img
