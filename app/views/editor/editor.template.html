@@ -10,7 +10,8 @@
         <i class="fa fa-times close" (click)="uploadDialog = false"> </i>
       </div>
       <!--TODO diry code please fix future me : URLMode === undefined !-->
-      <!--TODO Fix Code! LAZY!! check feilds before submitting only in HTML-->
+      <!--TODO Fix Code! LAZY!! check feilds before submitting only in HTML
+      Fix: set modal to yt mode -->
       <!-- shit code please fix!!-->
       <ul class="nav nav-tabs" *ngIf="ThumbnailView">
         <li class="nav-item">
@@ -90,7 +91,7 @@
           Save changes
         </button>
         <ng-template>
-          <button *ngIf="ThumbnailView"
+          <button
           type="button"
           class="btn btn-primary"
           (click)="updateVideoUrl(YTIDInput);uploadDialog = false"

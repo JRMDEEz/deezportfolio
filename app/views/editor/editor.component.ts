@@ -206,7 +206,8 @@ export class EditorViewComponent {
       });
   }
   setThumbView() {
-    this.ThumbnailView != this.ThumbnailView;
+    this.ThumbnailView = !this.ThumbnailView;
+    console.log(this.ThumbnailView);
   }
   deleteItem(index) {
     if (index > -1) {
