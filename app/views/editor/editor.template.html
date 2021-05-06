@@ -28,7 +28,7 @@
               id="input-file-now"
               class="file-upload maxwidth"
               accept="image/*"
-              (change)="importedFile = $event"
+              (change)="importedFile = $event.target.files"
             />
           </div>
         </div>
@@ -46,7 +46,7 @@
                 placeholder=""
                 autofocus
                 autocomplete="off"
-                (input)="importedFile = $event.target.innerText"
+                (input)="importedURL = $event.target.innerText"
               />
             </div>
           </div>

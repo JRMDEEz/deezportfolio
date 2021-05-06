@@ -15,6 +15,7 @@ export class EditorViewComponent {
   //DIALOG inneficient!!
   URLMode = false;
   importedFile;
+  importedURL;
   //END
   notfound = false;
   loaded = false;
@@ -95,17 +96,11 @@ export class EditorViewComponent {
       }
     });
   }
-  //imports image from the dialog
-
-  importFile(file) {
-    this.importFile = file;
-    console.log(file);
-  }
   setView() {
     this.publicView = !this.publicView;
   }
   UploadFile(URLMode) {
-    console.log(this.importFile, URLMode);
+    console.log(this.importedFile, this.importedURL, URLMode);
   }
   blankObject(typeName) {
     let a = this.validTypes.find(item => {
