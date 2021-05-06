@@ -57,7 +57,7 @@ export class ProjectsViewComponent {
         this.loaded = true;
         querySnapshot.forEach(doc => {
           this.loaded = true;
-          this.add(doc.id, doc.data().Thumbnail, doc.data().Title);
+          this.add(doc.id, doc.data().Thumbnail, doc.data().Title,doc.data().publicView);
         });
         return;
       })
@@ -99,7 +99,7 @@ export class ProjectsViewComponent {
         this.add(
           doc.id,
           "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
-          "New Project"
+          "New Project",false
         );
       })
       .catch(err => {
@@ -108,8 +108,8 @@ export class ProjectsViewComponent {
         console.log(err);
       });
   }
-  add(id: string, imgthumb: string, title: string) {
-    this.range.push({ id: id, imgthumb: imgthumb, title: title });
+  add(id: string, imgthumb: string, title: string,publicView : boolean) {
+    this.range.push({ id: id, imgthumb: imgthumb, title: title ,publicView : publicView});
   }
   clear() {
     this.range = [];

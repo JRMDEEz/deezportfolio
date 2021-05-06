@@ -239,14 +239,15 @@ export class EditorViewComponent {
     // Always make sure to construct SafeValue objects as
     // close as possible to the input data so
     // that it's easier to check if the value is safe.
-    this.YTid = id;
-    if (id != undefined) {
-       this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      'https://www.youtube.com/embed/' + id);
-    } else {
+    if (id == undefined) {
+      this.YTid = '';
       this.videoUrl = '';
+    } else {
+      this.YTid = id;
+      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        'https://www.youtube.com/embed/' + id
+      );
     }
-   
   }
   updateBackground(bkg: string);
   /*makeSanitize(str: any) {
