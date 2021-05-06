@@ -13,7 +13,7 @@
       <!--TODO Fix Code! LAZY!! check feilds before submitting only in HTML-->
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link clickable" [ngClass]="{'active': URLMode === undefined}"
+          <a class="nav-link clickable" [ngClass]="{'active': URLMode == undefined}"
             (click)="URLMode = undefined">Upload</a>
         </li>
         <li class="nav-item">
@@ -21,7 +21,7 @@
         </li>
       </ul>
       <div class="modal-body">
-        <div class="form-group" *ngIf="URLMode == false; else uploadMode">
+        <div class="form-group" *ngIf="URLMode == undefined; else uploadMode">
           <div class="file-upload-wrapper">
             <input (change)="FileInput = $event.target.files[0]"
               type="file"
