@@ -225,12 +225,18 @@ export class EditorViewComponent {
     );
     return tmp;
   }
+  publishVideoUrl(id:string){
+    if(id != undefined){
+      this.updateVideoUrl(id);
+    }  
+    this.YTid = id;
+  }
   updateVideoUrl(id: string) {
     // Appending an ID to a YouTube URL is safe.
     // Always make sure to construct SafeValue objects as
     // close as possible to the input data so
     // that it's easier to check if the value is safe.
-    this.YTid = id;
+    
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       'https://www.youtube.com/embed/' + id
     );
