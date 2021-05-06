@@ -27,7 +27,7 @@
                   style="width:100%"
                 />
                   <div class="w-100"></div>
-                  <p><strong>{{r.title}}</strong><i *ngIf="r.publicView" class="fa fa-eye-slash"></i>
+                  <p><i *ngIf="!r.publicView" class="fa fa-eye-slash fa-fw"></i><strong>{{r.title}}</strong>
                   </p>
                 </div>
               </div>
