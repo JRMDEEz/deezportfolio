@@ -98,7 +98,7 @@ export class EditorViewComponent {
     this.publicView = !this.publicView;
   }
   uploading = false;
-  uploadPercent = 0;
+  uploadPercent = '0%';
   private uploadTask: firebase.storage.UploadTask;
   UploadFile(FileInput, UrlInput, URLMode) {
     if (URLMode) {
@@ -115,8 +115,8 @@ export class EditorViewComponent {
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadPercent = progress;
-          console.log('Upload is ' + progress + '% done');
+          this.uploadPercent = progress + '%';
+          console.log('Upload is ' + this.uploadPercent + 'done');
           switch (snapshot.state) {
             case firebase.storage.TaskState.PAUSED: // or 'paused'
               console.log('Upload is paused');
