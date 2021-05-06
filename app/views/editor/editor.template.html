@@ -93,7 +93,7 @@
             </div>
             <div class="progress" *ngIf="uploading">
               <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped" role="progressbar"
-                [ngClass]="{'width': uploadPercent}" aria-valuenow="uploadPercent" aria-valuemin="0"
+                [ngStyle]="{'width': uploadPercent}" aria-valuenow="uploadPercent" aria-valuemin="0"
                 aria-valuemax="100">
                 Uploading...
               </div>
