@@ -1,11 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SelectionModel } from '@angular/cdk/collections';
-import {
-  MatTableDataSource,
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef
-} from '@angular/material';
 
 import { ModalHelperService } from '../../../modal-helper.service';
 
@@ -60,13 +53,8 @@ export class ModalUploadComponent {
     'CEO',
     'Industry'
   ];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-  selection = new SelectionModel(true, []);
 
-  constructor(
-    public dialogRef: MatDialogRef<ModalUploadComponent>,
-    public modalHelperService: ModalHelperService
-  ) {}
+  constructor(public modalHelperService: ModalHelperService) {}
 
   save = () => this.modalHelperService.save();
   filter = () => this.modalHelperService.filter();
