@@ -51,8 +51,7 @@ export class EditorViewComponent {
       blank: {
         type: 'image',
         content:
-          'https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/img.png?alt=media&token=fd18f021-6877-4456-af34-e4e9587547d2',
-        uploadPercent :"0%",
+          'https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/img.png?alt=media&token=fd18f021-6877-4456-af34-e4e9587547d2'
       }
     }
   ];
@@ -98,12 +97,12 @@ export class EditorViewComponent {
   setView() {
     this.publicView = !this.publicView;
   }
-  editImage(position){
-this.dialogrequestPosition = position;
+  editImage(position) {
+    this.dialogrequestPosition = position;
     this.UrlInput = this.list[position].content;
     this.uploadDialog = true;
   }
-  EditThumbnail(){
+  EditThumbnail() {
     this.dialogrequestPosition = -1;
     this.UrlInput = this.Thumbnail;
     this.uploadDialog = true;
@@ -115,19 +114,18 @@ this.dialogrequestPosition = position;
   uploading = false;
   uploadPercent = '0%';
   private uploadTask: firebase.storage.UploadTask;
-  UploadFile(FileInput : File, UrlInput, URLMode:number) {
-    
+  UploadFile(FileInput: File, UrlInput, URLMode: number) {
     if (URLMode) {
-      if(this.dialogrequestPosition == -1){
-      this.Thumbnail = UrlInput;
-      }else{
+      if (this.dialogrequestPosition == -1) {
+        this.Thumbnail = UrlInput;
+      } else {
         this.list[this.dialogrequestPosition].content = UrlInput;
       }
       console.log(UrlInput);
     } else {
-      
       console.log('FILE MODE');
       this.uploading = true;
+
       this.uploadTask = this.firebaseHelper.uploadFile(this.ID, FileInput);
       // Listen for state changes, errors, and completion of the upload.
       this.uploadTask.on(
@@ -136,12 +134,8 @@ this.dialogrequestPosition = position;
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           var progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            if(this.dialogrequestPosition == -1){
-      this.uploadPercent = progress + '%';
-      }else{
-        this.list[this.dialogrequestPosition].uploadPercent = progress + '%';;
-      }
-          
+          this.uploadPercent = progress + '%';
+
           console.log('Upload is ' + this.uploadPercent + 'done');
           switch (snapshot.state) {
             case firebase.storage.TaskState.PAUSED: // or 'paused'
@@ -173,11 +167,11 @@ this.dialogrequestPosition = position;
         () => {
           // Upload completed successfully, now we can get the download URL
           this.uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-             if(this.dialogrequestPosition == -1){
-      this.Thumbnail = downloadURL;
-      }else{
-        this.list[this.dialogrequestPosition].content = downloadURL;
-      }
+            if (this.dialogrequestPosition == -1) {
+              this.Thumbnail = downloadURL;
+            } else {
+              this.list[this.dialogrequestPosition].content = downloadURL;
+            }
           });
         }
       );

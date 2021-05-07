@@ -56,7 +56,7 @@ export class firebaseHelper {
   }
   uploadFile(projectId, File: File): firebase.storage.UploadTask {
     var fileName =
-      'Thumbnail.' +
+      uuidv4() +
       File.name
         .split('.')
         .pop()

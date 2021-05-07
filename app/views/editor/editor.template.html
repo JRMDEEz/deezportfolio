@@ -12,7 +12,7 @@
       <!--TODO diry code please fix future me : URLMode === undefined !-->
       <!--TODO Fix Code! LAZY!! check feilds before submitting only in HTML
       Fix: set modal to yt mode -->
-      <!-- shit code please fix!!-->
+      <!-- shit code please fix!! this needs its own class but no knowhow-->
       <ul class="nav nav-tabs" *ngIf="ThumbnailView">
         <li class="nav-item">
           <a class="nav-link clickable" [ngClass]="{'active': URLMode == undefined}"
@@ -136,7 +136,7 @@
                 />
               </ng-template>
             </div>
-            <div class="progress" *ngIf="uploading">
+            <div class="progress" *ngIf="uploading && dialogrequestPosition == -1">
               <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped" role="progressbar"
                 [ngStyle]="{'width': uploadPercent}" aria-valuenow="uploadPercent" aria-valuemin="0"
                 aria-valuemax="100">
@@ -225,8 +225,20 @@
                   <div class="row">
                     <div class="col-xs-3 col-sm-4 col-lg-5"></div>
                     <div class="col-xs-6 col-sm-4 col-lg-2">
-                      <img src="{{item.content}}" />
+                      <img src="{{item.content}}" (load)="onImageLoad()"/>
                     </div>
+                    <div class="progress" *ngIf="uploading && dialogrequestPosition == i">
+              <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped" role="progressbar"
+                [ngStyle]="{'width': uploadPercent}" aria-valuenow="uploadPercent" aria-valuemin="0"
+                aria-valuemax="100">
+                <ng-template *ngIf="uploadPercent != '100%';else uploading">
+                  Uploading...
+                </ng-template>
+                <ng-template #uploading>
+                  Uploaded! wait...
+                </ng-template>
+              </div>
+            </div>
                     <div class="col-xs-3 col-sm-4 col-lg-5"></div>
                   </div>
                 </div>
