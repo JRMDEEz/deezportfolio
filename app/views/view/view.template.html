@@ -2,6 +2,8 @@
   <div *ngIf="!notfound; else notFound">
     <div class="viewHeader">
       <button type="button" class="btn btn-primary" routerLink="/projects/edit" [queryParams]="{ id: ID }" *ngIf="privilages == 2"><i class="fa fa-pencil"></i></button>
+      <i class="fa fa-eye" *ngIf="publicView;else private"></i>
+      <ng-template #private><i class="fa fa-eye-slash"></i></ng-template>
       <div class="row align-items-center">
         <div class="col-xs-12 col-sm-8 col-md-7 text-center">
           <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 "></div>

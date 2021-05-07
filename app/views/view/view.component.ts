@@ -1,23 +1,24 @@
-import { Component } from "@angular/core";
-import { Http } from "@angular/http";
-import { firebaseConfig } from "../../firebaseConfig";
-import { DomSanitizer } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
-import { forEach } from "@angular/router/src/utils/collection";
-import { firebaseHelper } from "../../firebaseHelper";
+import { Component } from '@angular/core';
+import { Http } from '@angular/http';
+import { firebaseConfig } from '../../firebaseConfig';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { forEach } from '@angular/router/src/utils/collection';
+import { firebaseHelper } from '../../firebaseHelper';
 var getOptions = {};
 @Component({
-  selector: "view",
+  selector: 'view',
   /*template: ``*/
-  templateUrl: "/view.template"
+  templateUrl: '/view.template'
 })
 export class ViewComponent {
   notfound = false;
   loaded = false;
-  videoUrl = "";
-  Title = "";;
-  Subtitle = "";;
-  Thumbnail = "";;
+  videoUrl = '';
+  Title = '';
+  Subtitle = '';
+  Thumbnail = '';
+  publicView = true;
   ID;
   list = [];
   privilages;
@@ -30,7 +31,8 @@ export class ViewComponent {
       if (doc.exists) {
         this.Title = doc.data().Title;
         this.Subtitle = doc.data().Subtitle;
-        if (doc.data().YTid != "" && doc.data().YTid != null) {
+        this.publicView = doc.data().publicView;
+        if (doc.data().YTid != '' && doc.data().YTid != null) {
           this.updateVideoUrl(doc.data().YTid);
         } else {
           this.Thumbnail = doc.data().Thumbnail;
@@ -42,7 +44,7 @@ export class ViewComponent {
           });
       } else {
         this.notfound = true;
-        console.log("No such document!");
+        console.log('No such document!');
       }
     });
     this.firebaseHelper.getPrivilages().then(priv => {
@@ -58,7 +60,7 @@ export class ViewComponent {
     // close as possible to the input data so
     // that it's easier to check if the value is safe.
     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      "https://www.youtube.com/embed/" + id
+      'https://www.youtube.com/embed/' + id
     );
   }
   editProject() {}
@@ -67,6 +69,6 @@ export class ViewComponent {
     return this.sanitizer.bypassSecurityTrustHtml(str);
   }*/
   splitAtIndex(value, index) {
-    return value.substring(0, index) + "," + value.substring(index);
+    return value.substring(0, index) + ',' + value.substring(index);
   }
 }

@@ -62,7 +62,7 @@ export class firebaseHelper {
         .pop()
         .toLowerCase();
     console.log('UPLOAD ID: ' + fileName);
-    var fbStoragePath = projectId + '/' + fileName;
+    var fbStoragePath = "Images/"+projectId + '/' + fileName;
     var storageRef = firebase
       .storage()
       .ref()

@@ -122,9 +122,7 @@ export class EditorViewComponent {
       } else {
         this.list[this.dialogrequestPosition].content = UrlInput;
       }
-      console.log(UrlInput);
     } else {
-      console.log('FILE MODE');
       this.uploading = true;
 
       this.uploadTask = this.firebaseHelper.uploadFile(this.ID, FileInput);
