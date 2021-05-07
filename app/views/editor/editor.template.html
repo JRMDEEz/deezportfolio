@@ -5,7 +5,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">
-          <b>Upload Thumbnail</b>
+          <b>Upload Image</b>
         </h5>
         <i class="fa fa-times close" (click)="uploadDialog = false"> </i>
       </div>
@@ -115,7 +115,7 @@
         <p *ngIf="ThumbnailView;else YTview">Thumbnail</p>
         <ng-template #YTview><p>Youtube</p></ng-template>
       </button>
-      <button type="button" class="btn btn-primary"(click)="uploadDialog = true">
+      <button type="button" class="btn btn-primary"(click)="EditThumbnail()">
         <i class="fa fa-upload fa-fw clickable"></i>
       </button>
 
