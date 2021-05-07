@@ -249,21 +249,13 @@ export class EditorViewComponent {
     );
     return tmp;
   }
-  publishVideoUrl(id: string) {
-    console.log(id);
-    if (id != undefined) {
-      this.updateVideoUrl(id);
-      this.YTid = id;
-    } else {
-      this.YTid = '';
-    }
-  }
   updateVideoUrl(id: string) {
     // Appending an ID to a YouTube URL is safe.
     // Always make sure to construct SafeValue objects as
     // close as possible to the input data so
     // that it's easier to check if the value is safe.
-    if (id == undefined) {
+    console.log(id);
+    if (id == undefined || id == '') {
       this.YTid = '';
       this.videoUrl = '';
     } else {
