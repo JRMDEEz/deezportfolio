@@ -226,19 +226,20 @@
                     <div class="col-xs-3 col-sm-4 col-lg-5"></div>
                     <div class="col-xs-6 col-sm-4 col-lg-2">
                       <img src="{{item.content}}" (load)="onImageLoad()"/>
+                      <div class="progress" *ngIf="uploading && dialogrequestPosition == i">
+                        <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped"
+                          role="progressbar" [ngStyle]="{'width': uploadPercent}" aria-valuenow="uploadPercent"
+                          aria-valuemin="0" aria-valuemax="100">
+                          <ng-template *ngIf="uploadPercent != '100%';else uploading">
+                            Uploading...
+                          </ng-template>
+                          <ng-template #uploading>
+                            Uploaded! wait...
+                          </ng-template>
+                        </div>
+                      </div>
                     </div>
-                    <div class="progress" *ngIf="uploading && dialogrequestPosition == i">
-              <div class="progress-bar progressbar-bkg progress-bar-animated progress-bar-striped" role="progressbar"
-                [ngStyle]="{'width': uploadPercent}" aria-valuenow="uploadPercent" aria-valuemin="0"
-                aria-valuemax="100">
-                <ng-template *ngIf="uploadPercent != '100%';else uploading">
-                  Uploading...
-                </ng-template>
-                <ng-template #uploading>
-                  Uploaded! wait...
-                </ng-template>
-              </div>
-            </div>
+
                     <div class="col-xs-3 col-sm-4 col-lg-5"></div>
                   </div>
                 </div>
