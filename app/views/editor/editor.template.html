@@ -190,6 +190,10 @@
                   aria-controls="dropdown-basic"
                 ></i>
                 <ul id="dropdown-basic" class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                  <li *ngIf="item.type == 'image'">
+                    <a class="dropdown-item clickable" (click)="editImage(i)"><i class="fa fa-picture-o"></i>
+                      Edit Image</a>
+                  </li>
                   <li role="menuitem">
                     <p class="dropdown-item text-center">
                       <i class="fa fa-plus"></i> Add
