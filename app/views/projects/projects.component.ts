@@ -108,7 +108,7 @@ export class ProjectsViewComponent {
         //FIX inject it tho the doc or something...
         this.add(
           doc.id,
-          'https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png',
+          'https://firebasestorage.googleapis.com/v0/b/deez-portfolio.appspot.com/o/newProject.png?alt=media&token=50082d2d-cb80-4dc1-9b30-7f3f048cd8e4',
           'New Project',
           false
         );

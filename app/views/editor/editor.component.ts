@@ -32,7 +32,7 @@ export class EditorViewComponent {
       value: 'Paragraph',
       blank: {
         type: 'paragraph',
-        content: 'Type Here'
+        content: ''
       }
     },
     {
