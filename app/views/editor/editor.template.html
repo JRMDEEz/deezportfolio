@@ -90,7 +90,7 @@
         >
           Save changes
         </button>
-        <button *ngIf="!ThumbnailView || dialogrequestPosition == -1"
+        <button *ngIf="!ThumbnailView && dialogrequestPosition == -1"
           type="button"
           class="btn btn-primary"
           (click)="updateVideoUrl(YTIDInput);uploadDialog = false"
