@@ -1,12 +1,12 @@
-import { Component } from "@angular/core";
-import { Http } from "@angular/http";
-import { DomSanitizer } from "@angular/platform-browser";
-import { firebaseConfig } from "../../firebaseConfig";
-import { ActivatedRoute, NavigationEnd, Params, Router } from "@angular/router";
-import { firebaseHelper } from "../../firebaseHelper";
-import { Observable } from "rxjs";
+import { Component } from '@angular/core';
+import { Http } from '@angular/http';
+import { DomSanitizer } from '@angular/platform-browser';
+import { firebaseConfig } from '../../firebaseConfig';
+import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
+import { firebaseHelper } from '../../firebaseHelper';
+import { Observable } from 'rxjs';
 @Component({
-  selector: "projects",
+  selector: 'projects',
   /*template: `
     <div class="col-md-4 col-sm-5 col-xs-10">
       <div
@@ -24,7 +24,7 @@ import { Observable } from "rxjs";
       </div>
     </div>
   `*/
-  templateUrl: "/projects.template"
+  templateUrl: '/projects.template'
 })
 export class ProjectsViewComponent {
   public range = [];
@@ -57,14 +57,19 @@ export class ProjectsViewComponent {
         this.loaded = true;
         querySnapshot.forEach(doc => {
           this.loaded = true;
-          this.add(doc.id, doc.data().Thumbnail, doc.data().Title,doc.data().publicView);
+          this.add(
+            doc.id,
+            doc.data().Thumbnail,
+            doc.data().Title,
+            doc.data().publicView
+          );
         });
         return;
       })
       .catch(err => {
         this.loaded = true;
         this.notfound = true;
-        console.log("Error getting documents: ", err);
+        console.log('Error getting documents: ', err);
         return;
       });
     return;
@@ -73,33 +78,39 @@ export class ProjectsViewComponent {
     this.loaded = false;
     this.notfound = false;
     this.clear();
-    console.log("searching");
+    console.log('searching');
     this.firebaseHelper
       .searchProjcets(search)
       .then(querySnapshot => {
         this.loaded = true;
         querySnapshot.forEach(doc => {
-          this.add(doc.id, doc.data().Thumbnail, doc.data().Title);
+          this.add(
+            doc.id,
+            doc.data().Thumbnail,
+            doc.data().Title,
+            doc.data().publicView
+          );
         });
       })
       .catch(error => {
         this.loaded = true;
         this.notfound = true;
-        console.log("Error getting documents: ", error);
+        console.log('Error getting documents: ', error);
       });
   }
   createProject() {
     this.loaded = false;
     this.notfound = false;
     this.firebaseHelper
-      .createProject("New Project")
+      .createProject('New Project')
       .then(doc => {
         this.loaded = true;
         //FIX inject it tho the doc or something...
         this.add(
           doc.id,
-          "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png",
-          "New Project",false
+          'https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png',
+          'New Project',
+          false
         );
       })
       .catch(err => {
@@ -108,8 +119,13 @@ export class ProjectsViewComponent {
         console.log(err);
       });
   }
-  add(id: string, imgthumb: string, title: string,publicView : boolean) {
-    this.range.push({ id: id, imgthumb: imgthumb, title: title ,publicView : publicView});
+  add(id: string, imgthumb: string, title: string, publicView: boolean) {
+    this.range.push({
+      id: id,
+      imgthumb: imgthumb,
+      title: title,
+      publicView: publicView
+    });
   }
   clear() {
     this.range = [];
