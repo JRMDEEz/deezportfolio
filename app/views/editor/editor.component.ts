@@ -107,6 +107,7 @@ export class EditorViewComponent {
     this.UrlInput = this.Thumbnail;
     this.uploadDialog = true;
   }
+  //nasty code please fix!! , dialog needs its own class but no knowhow yet, ng-ofSomeSort errors on iodefin
   uploadDialog = false;
   UrlInput;
   FileInput;
